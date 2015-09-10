@@ -1,14 +1,14 @@
 Basic Setup for Automating Job Submittals
 
+To Run:
+	Double click setup.vbs
+
 ToDo:
 	Add annotation of item number to pdfs
-	Figure out if can all be run in one script or if individual ones need to be written
 		Write batch for all scripts
 	Put spec number into each file name
 	Possible save-all-to-pdf script	
 		Choice of whether to combine or not
-	Combine all pdf's into one
-		and specific pages (for shop drawings)
 	Create a heirarcheral standard
 		Approved Submittals
 		Cat-Cuts
@@ -38,6 +38,13 @@ Useful:
 	pdf reference:	http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/iac_api_reference.pdf
 	
 Log:
+	***09/10/2015***
+	Insert pages into main completedPDF file, completed:
+		Telecommunications Contractor
+		Key Personnel
+		Minimum Manufacturer Qualifications
+		Test Plan
+		Product
 	***09/09/2015***
 	Found out how to merge pdfs and created basis to start
 	***09/08/2015***

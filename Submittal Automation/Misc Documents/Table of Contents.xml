@@ -17,7 +17,7 @@
   <AllowPNG/>
  </OfficeDocumentSettings>
  <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
-  <WindowHeight>6435</WindowHeight>
+  <WindowHeight>4350</WindowHeight>
   <WindowWidth>15345</WindowWidth>
   <WindowTopX>0</WindowTopX>
   <WindowTopY>0</WindowTopY>
@@ -29,7 +29,7 @@
    <Alignment ss:Vertical="Top" ss:WrapText="1"/>
    <Font ss:FontName="Times New Roman" x:CharSet="204" x:Family="Roman"/>
   </Style>
-  <Style ss:ID="m217379672">
+  <Style ss:ID="m223126656">
    <Alignment ss:Horizontal="Left" ss:Vertical="Top" ss:WrapText="1"/>
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
@@ -45,7 +45,7 @@
     ss:Color="#000000" ss:Bold="1"/>
    <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="m217379692">
+  <Style ss:ID="m223126676">
    <Alignment ss:Horizontal="Left" ss:Vertical="Top" ss:WrapText="1"/>
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
@@ -61,7 +61,7 @@
     ss:Color="#000000" ss:Bold="1"/>
    <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="m217379712">
+  <Style ss:ID="m223126696">
    <Alignment ss:Horizontal="Left" ss:Vertical="Center" ss:WrapText="1"/>
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
@@ -77,7 +77,7 @@
     ss:Color="#000000" ss:Bold="1"/>
    <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="m217379732">
+  <Style ss:ID="m223126716">
    <Alignment ss:Horizontal="Left" ss:Vertical="Center" ss:WrapText="1"/>
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
@@ -93,7 +93,7 @@
     ss:Color="#000000" ss:Bold="1"/>
    <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="m217379752">
+  <Style ss:ID="m223126736">
    <Alignment ss:Horizontal="Left" ss:Vertical="Center" ss:WrapText="1"/>
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
@@ -109,7 +109,7 @@
     ss:Color="#000000" ss:Bold="1"/>
    <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="m217379772">
+  <Style ss:ID="m223126756">
    <Alignment ss:Horizontal="Left" ss:Vertical="Center" ss:WrapText="1"/>
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
@@ -255,10 +255,10 @@
    <Column ss:AutoFitWidth="0" ss:Width="174.75"/>
    <Column ss:AutoFitWidth="0" ss:Width="12"/>
    <Row ss:AutoFitHeight="0" ss:Height="15">
-    <Cell ss:StyleID="s62"><Data ss:Type="String">Full Title</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">TITLE</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="15">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">Address</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">ADDRESS</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="9">
     <Cell ss:StyleID="s64"><Data ss:Type="String">Submittal No.</Data></Cell>
@@ -290,12 +290,12 @@
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="20.25">
     <Cell ss:StyleID="s67"><Data ss:Type="String">Item&#10;No.</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="m217379672"><Data ss:Type="String">Submittal&#10;Type</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="m217379692"><Data ss:Type="String">Spec&#10;Ref</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="m217379712"><Data ss:Type="String">Description</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="m217379732"><Data ss:Type="String">Model/type/color</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="m217379752"><Data ss:Type="String">Part Number</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="m217379772"><Data ss:Type="String">Manufacturer</Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="m223126656"><Data ss:Type="String">Submittal&#10;Type</Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="m223126676"><Data ss:Type="String">Spec&#10;Ref</Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="m223126696"><Data ss:Type="String">Description</Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="m223126716"><Data ss:Type="String">Model/type/color</Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="m223126736"><Data ss:Type="String">Part Number</Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="m223126756"><Data ss:Type="String">Manufacturer</Data></Cell>
     <Cell ss:StyleID="s73"><Data ss:Type="String">Comments</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="9.9375">
@@ -347,38 +347,38 @@
     <Cell ss:StyleID="s86"/>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="9.9375">
-    <Cell ss:StyleID="s79"><Data ss:Type="Number">5</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s82"><Data ss:Type="String">Product</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s82"><Data ss:Type="Number">6.5</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s70"><Data ss:Type="String">Cable Guide</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s82"><Data ss:Type="String">RediRail</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s82"><Data ss:Type="String">SB13AL24FB</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s82"><Data ss:Type="String">Cooper B-Line</Data></Cell>
+    <Cell ss:StyleID="s79"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s70"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="9.9375">
-    <Cell ss:StyleID="s79"><Data ss:Type="Number">6</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s82"><Data ss:Type="String">Product</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s82"><Data ss:Type="Number">4.6900000000000004</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s70"><Data ss:Type="String">Patch Panel</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s82"><Data ss:Type="String">48 Port Patch Panel</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s82"><Data ss:Type="String">OR-PHDHJU48</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s82"><Data ss:Type="String">Ortronics</Data></Cell>
-   </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="30">
-    <Cell ss:StyleID="s79"><Data ss:Type="Number">7</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s82"><Data ss:Type="String">Product</Data></Cell>
-    <Cell ss:StyleID="s82"/>
-    <Cell ss:StyleID="s82"/>
-    <Cell ss:MergeAcross="1" ss:StyleID="s70"><Data ss:Type="String">PDU</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s82"><Data ss:Type="String">PDU and a really long empty sentence talking about nothing just trying to take up some space in order to see if excel expands</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s82"><Data ss:Type="String">PDUMH20</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s82"><Data ss:Type="String">TrippLite</Data></Cell>
+    <Cell ss:StyleID="s79"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s70"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="9.9375">
-    <Cell ss:StyleID="s79"><Data ss:Type="Number">8</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s82"><Data ss:Type="String">Document</Data></Cell>
+    <Cell ss:StyleID="s79"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
+    <Cell ss:StyleID="s82"/>
+    <Cell ss:StyleID="s82"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s70"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="9.9375">
+    <Cell ss:StyleID="s79"/>
+    <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
     <Cell ss:MergeAcross="1" ss:StyleID="s90"/>
-    <Cell ss:MergeAcross="1" ss:StyleID="s70"><Data ss:Type="String">Shop Drawings</Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="s70"/>
     <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
     <Cell ss:MergeAcross="1" ss:StyleID="s82"/>
     <Cell ss:MergeAcross="1" ss:StyleID="s82"/>

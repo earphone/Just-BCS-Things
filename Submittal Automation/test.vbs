@@ -5,11 +5,18 @@
 'Global Variables
 	Dim rowNumber
 	Dim itemNumber
-	Dim files, i, fileCount
+	Dim files, fileCount
+	Dim currentPage
+'Completed PDF Setup
+	Dim completedAPP, completedPDF
+	Set completedAPP = CreateObject("AcroExch.app")
+	Set completedPDF = CreateObject("AcroExch.PDDoc")
+	Set tempPDF = CreateObject("AcroExch.PDDoc")
 
 'Initialize Variables
 	itemNumber = 5
 	rowNumber = 12
+	currentPage = 2
 
 'Get the initial information
 	'1 if ok; 2 is cancel
@@ -110,11 +117,6 @@
 			Wscript.Echo "Completed Folder exists."
 		End If
 	End If
-
-'Completed PDF Setup
-	Dim completedAPP, completedPDF
-	Set completedAPP = CreateObject("AcroExch.app")
-	Set completedPDF = CreateObject("AcroExch.PDDoc")
 	
 'Word Documents
 	'Title Sheet
@@ -133,43 +135,22 @@
 		'Save, Print to PDF, and Quit Word TS
 		tsDocument.Save
 		tsDocument.saveas miscPath + "\Title Sheet.pdf", 17
-		tsDocument.saveas completedPath + "\" + shortTitle + " Completed_" + singleDate + ".pdf", 17
-'Set completed PDF path
-		completedPath = completedPath + "\" + shortTitle + " Completed_" + singleDate
+		completedPath = completedPath + "\" + shortTitle + " Completed_" + singleDate + ".pdf"
+		tsDocument.saveas completedPath, 17		
 		tsDocument.Close
 		allWord.Quit
 		
-		*****
 		'Remove unneeded pages based upon shop drawing choice
 'Open completed PDF doc
-		Set completedPDF = CreateObject("AcroExch.PDDoc")
-		Wscript.Echo "Completed path is " + completedPath
 		completedPDF.Open completedPath
 		'If include shop drawings
 		If shopDrawings = 6 Then
-			completedPDF.DeletePages 1, 1
+			completedPDF.DeletePages 1,1
 		'If don't include shop drawings
 		Else:
 			completedPDF.DeletePages 2, 2
-			completedPDF.DeletePages 8, 8
+			completedPDF.DeletePages 7, 7
 		End If
-		*****
-		
-	'Test Plan
-		'Setup Word for TP
-		Set allWord = CreateObject("Word.Application")
-		allWord.Visible = False
-		Set tpDocument = allWord.Documents.Open(miscPath + "\Test Plan.docx")
-		
-		'Find and Replace Specific Words
-		SearchAndReplace "SHORT", shortTitle, allWord
-		SearchAndReplace "DATE", todaysDate, allWord		
-		
-		'Save, Print to PDF, and Quit Word TP
-		tpDocument.Save
-		tpDocument.saveas miscPath + "\Test Plan.pdf", 17
-		tpDocument.Close
-		allWord.Quit
 		
 	'Telecommunications Contractor
 		'Setup Word for TC
@@ -185,6 +166,22 @@
 		tcDocument.Save
 		tcDocument.saveas miscPath + "\Telecommunications Contractor.pdf", 17
 		tcDocument.Close
+		allWord.Quit
+		
+	'Test Plan
+		'Setup Word for TP
+		Set allWord = CreateObject("Word.Application")
+		allWord.Visible = False
+		Set tpDocument = allWord.Documents.Open(miscPath + "\Test Plan.docx")
+		
+		'Find and Replace Specific Words
+		SearchAndReplace "SHORT", shortTitle, allWord
+		SearchAndReplace "DATE", todaysDate, allWord		
+		
+		'Save, Print to PDF, and Quit Word TP
+		tpDocument.Save
+		tpDocument.saveas miscPath + "\Test Plan.pdf", 17
+		tpDocument.Close
 		allWord.Quit
 		
 	'Word Functions
@@ -223,7 +220,6 @@
 		
 		'Fill in Product Info
 		GetFileNames ccFSO, ccPath
-		i = 1
 		For Each targetfile In files
 			removeExt = Left(targetfile.name, InStrRev(targetfile.name,".") - 1)
 			splitPath = Split(removeExt,"_")
@@ -265,7 +261,6 @@
 			tocWorksheet.Cells(rowNumber,10) = splitPath(1)
 			'Manufacturer
 			tocWorksheet.Cells(rowNumber,12) = splitPath(0)
-			i = i + 1
 			rowNumber = rowNumber + 1
 			itemNumber = itemNumber + 1
 		Next
@@ -308,7 +303,64 @@
 				fileCount = fileCount + 1
 			Next
 		End Sub
+		
+	'Add Pages to PDF
+		'Telecommunications Contractor
+			tempPDF.Open miscPath + "\Telecommunications Contractor.pdf"
+			completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
+			currentPage = currentPage + tempPDF.GetNumPages() + 1
+			tempPDF.Close
+		'Key Personnel
+			tempPDF.Open miscPath + "\Key Personnel List.pdf"
+			completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
+			currentPage = currentPage + tempPDF.GetNumPages()
+			tempPDF.Close
+			GetFileNames certFSO, certPath
+			For Each targetfile In files
+				splitPath = Split(targetfile.name, " ")
+				If splitPath(0) = "cert" Then
+					tempPDF.Open targetfile
+					completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
+					currentPage = currentPage + tempPDF.GetNumPages()
+					tempPDF.Close
+				End If
+			Next
+			currentPage = currentPage + 1
+		'Minimum Manufacturer Qualifications
+			GetFileNames certFSO, certPath
+			For Each targetfile In files
+				splitPath = Split(targetfile.name, " ")
+				If splitPath(0) = "letter" Then
+					tempPDF.Open targetfile
+					completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
+					currentPage = currentPage + tempPDF.GetNumPages()
+					tempPDF.Close
+				End If
+			Next
+			currentPage = currentPage + 1
+		'Test Plan
+			GetFileNames miscFSO, miscPath
+			For Each targetfile In files
+				splitPath = Split(targetfile.name, " ")
+				If splitPath(0) = "Test" Then 
+					tempPDF.Open targetfile
+					completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
+					currentPage = currentPage + tempPDF.GetNumPages() + 1
+					tempPDF.Close
+				End If
+			Next
+		'Products
+			GetFileNames ccFSO, ccPath
+			For Each targetfile In files
+				splitPath = Split(targetfile.name, " ")
+				tempPDF.Open targetfile
+				completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
+				currentPage = currentPage + tempPDF.GetNumPages()
+				tempPDF.Close
+			Next
 'Close completed PDF app
+	completedPDF.Save 0, completedPath
+	completedPDF.Close
 	completedAPP.Exit
 'Done
 Wscript.Echo "Done"
