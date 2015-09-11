@@ -1,0 +1,72 @@
+Log File
+Current Directory: C:\Users\BCST-352-BH\Documents\Higashi_Files\Useful\BCS Programming\Submittal Automation
+Short Title: Short Title
+Long Title: Full Title
+Address: Address
+Spec Section: Section
+Version: 1
+Date: 09/10/2015
+Shop Drawings: 7
+Cat-Cut Folder exists.
+Cert Folder exists.
+Misc Folder exists.
+Completed Folder exists.
+Replacing LONG with Full Title
+Replacing SHORT with Short Title
+Replacing DATE with 09/10/2015
+Replacing ADDRESS with Address
+Replacing SECTIONNO with Section
+Replacing SHORT with Short Title
+Replacing DATE with 09/10/2015
+Replacing SHORT with Short Title
+Replacing DATE with 09/10/2015
+Finished Word
+     Cooper B-Line_SB13AL24FB_Cable Guide_RediRail_6.5.pdf
+     Ortronics_OR-PHDHJU48_Patch Panel_48 Port Patch Panel_4.69.pdf
+     TrippLite_PDUMH20_PDU_PDU and a really long empty sentence talking about nothing just trying to take up some space in order to see if excel expands_.pdf
+Size of Cooper B-Line_SB13AL24FB_Cable Guide_RediRail_6.5 4
+Row Size of *Cable Guide* is *11*
+Row Size of *RediRail* is *8*
+Size of Ortronics_OR-PHDHJU48_Patch Panel_48 Port Patch Panel_4.69 4
+Row Size of *Patch Panel* is *11*
+Row Size of *48 Port Patch Panel* is *19*
+Size of TrippLite_PDUMH20_PDU_PDU and a really long empty sentence talking about nothing just trying to take up some space in order to see if excel expands_ 4
+Row Size of *PDU* is *3*
+Row Size of *PDU and a really long empty sentence talking about nothing just trying to take up some space in order to see if excel expands* is *125*
+ADDING TELECOMMUNICATIONS CONTRACTOR TO PDF
+ADDING KEY PERSONNEL TO PDF
+     cert BICSI exp11172015.pdf
+     cert RCDD exp12312015.pdf
+     letter belden.pdf
+     letter commscope.pdf
+     letter cooper b-line.pdf
+     letter legrand.pdf
+     letter ortronics.pdf
+     letter superior essex.pdf
+ADDING MMQ TO PDF
+     cert BICSI exp11172015.pdf
+     cert RCDD exp12312015.pdf
+     letter belden.pdf
+     letter commscope.pdf
+     letter cooper b-line.pdf
+     letter legrand.pdf
+     letter ortronics.pdf
+     letter superior essex.pdf
+ADDING TEST PLAN TO PDF
+     Key Personnel List.pdf
+     Key Personnel List.xlsx
+     Table of Contents.pdf
+     Table of Contents.xml
+     Telecommunications Contractor.docx
+     Telecommunications Contractor.pdf
+     Test Plan.docx
+     Test Plan.pdf
+     Title Sheet.docx
+     Title Sheet.pdf
+     ~$st Plan.docx
+     ~$tle Sheet.docx
+ADDING PRODUCTS TO PDF
+     Cooper B-Line_SB13AL24FB_Cable Guide_RediRail_6.5.pdf
+     Ortronics_OR-PHDHJU48_Patch Panel_48 Port Patch Panel_4.69.pdf
+     TrippLite_PDUMH20_PDU_PDU and a really long empty sentence talking about nothing just trying to take up some space in order to see if excel expands_.pdf
+Finished

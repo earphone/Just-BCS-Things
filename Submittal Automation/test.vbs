@@ -1,6 +1,6 @@
 'Debugging
 	Dim debug
-	debug = False
+	debug = True
 
 'Global Variables
 	Dim rowNumber
@@ -76,7 +76,14 @@
 	Dim WshShell, curDir
 	Set WshShell = CreateObject("WScript.Shell")
 	curDir = WshShell.CurrentDirectory
-
+	
+'Create log file
+	if debug Then
+		Dim log
+		Set log = CreateObject("Scripting.FileSystemObject").OpenTextFile(curDir + "\log.txt", 2, true)
+		log.WriteLine("Log File")
+	End If
+	
 'Get all folders and their paths
 	'Get Cat-Cut folder
 	Set ccFSO = CreateObject("Scripting.FileSystemObject")
@@ -96,26 +103,27 @@
 
 'Debug the Initializations
 	If debug Then
-		WScript.Echo curDir
-		WScript.Echo shortTitle
-		Wscript.Echo longTitle
-		Wscript.Echo address
-		Wscript.Echo specSection
-		Wscript.Echo version
-		Wscript.Echo todaysDate
-		Wscript.Echo shopDrawings
+		log.WriteLine "Current Directory: " + curDir
+		log.WriteLine "Short Title: " + shortTitle
+		log.WriteLine "Long Title: " + longTitle
+		log.WriteLine "Address: " + address
+		log.WriteLine "Spec Section: " + specSection
+		log.WriteLine "Version: " + version
+		log.WriteLine "Date: " + todaysDate
+		log.WriteLine "Shop Drawings: " + CStr(shopDrawings)
 		If ccFSO.FolderExists(curDir + "\Cat-Cuts") Then
-			Wscript.Echo "Cat-Cut Folder exists."
+			log.WriteLine "Cat-Cut Folder exists."
 		End If
 		If certFSO.FolderExists(curDir + "\Certificates") Then
-			Wscript.Echo "Cert Folder exists."
+			log.WriteLine "Cert Folder exists."
 		End If
 		If miscFSO.FolderExists(curDir + "\Misc Documents") Then
-			Wscript.Echo "Misc Folder exists."
+			log.WriteLine "Misc Folder exists."
 		End If
 		If completedFSO.FolderExists(curDir + "\Completed Submittals") Then
-			Wscript.Echo "Completed Folder exists."
+			log.WriteLine "Completed Folder exists."
 		End If
+		log.WriteLine ""
 	End If
 	
 'Word Documents
@@ -187,7 +195,7 @@
 	'Word Functions
 		Sub SearchAndReplace(find, replace, wordDoc)
 			If debug Then
-				Wscript.Echo "Replacing " + find + " with " + replace
+				log.WriteLine "Replacing " + find + " with " + replace
 			End If
 			Const wdReplaceAll = 2
 			Set selection = wordDoc.Selection
@@ -199,7 +207,7 @@
 		End Sub
 	
 	If debug Then
-		Wscript.Echo "Finished Word"
+		log.WriteLine "Finished Word"
 	End If
 	
 'Excel Documents
@@ -224,7 +232,7 @@
 			removeExt = Left(targetfile.name, InStrRev(targetfile.name,".") - 1)
 			splitPath = Split(removeExt,"_")
 			If debug Then
-				Wscript.Echo "Size of " + removeExt + " " + CStr(ubound(splitPath))
+				log.WriteLine "Size of " + removeExt + " " + CStr(ubound(splitPath))
 			End If
 			'Item Number
 			tocWorksheet.Cells(rowNumber,1) = itemNumber
@@ -237,7 +245,7 @@
 			'Description
 			tocWorksheet.Cells(rowNumber,6) = splitPath(2)
 			If debug Then
-				Wscript.Echo "Row Size of *" + CStr(tocWorksheet.Cells(rowNumber,6))+ "* is *" + CStr(Len(tocWorksheet.Cells(rowNumber,6))) + "*"
+				log.WriteLine "Row Size of *" + CStr(tocWorksheet.Cells(rowNumber,6))+ "* is *" + CStr(Len(tocWorksheet.Cells(rowNumber,6))) + "*"
 			End If
 			If Len(tocWorksheet.Cells(rowNumber,6)) > 45 Then
 				If Len(tocWorksheet.Cells(rowNumber,6)) > 90 Then
@@ -249,7 +257,7 @@
 			'Model/type/color
 			tocWorksheet.Cells(rowNumber,8) = splitPath(3)
 			If debug Then
-				Wscript.Echo "Row Size of *" + CStr(tocWorksheet.Cells(rowNumber,8))+ "* is *" + CStr(Len(tocWorksheet.Cells(rowNumber,8))) + "*"
+				log.WriteLine "Row Size of *" + CStr(tocWorksheet.Cells(rowNumber,8))+ "* is *" + CStr(Len(tocWorksheet.Cells(rowNumber,8))) + "*"
 			End If
 			If Len(tocWorksheet.Cells(rowNumber,8)) > 45 Then
 				If Len(tocWorksheet.Cells(rowNumber,8)) > 90 Then
@@ -298,7 +306,7 @@
 			Set files = TargetFolder.Files
 			For Each targetfile In files
 				If debug Then
-					Wscript.Echo targetfile.name
+					log.WriteLine "     " + targetfile.name
 				End If
 				fileCount = fileCount + 1
 			Next
@@ -306,11 +314,17 @@
 		
 	'Add Pages to PDF
 		'Telecommunications Contractor
+			If debug Then
+				log.WriteLine("ADDING TELECOMMUNICATIONS CONTRACTOR TO PDF")
+			End If
 			tempPDF.Open miscPath + "\Telecommunications Contractor.pdf"
 			completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
 			currentPage = currentPage + tempPDF.GetNumPages() + 1
 			tempPDF.Close
 		'Key Personnel
+			If debug Then
+				log.WriteLine("ADDING KEY PERSONNEL TO PDF")
+			End If
 			tempPDF.Open miscPath + "\Key Personnel List.pdf"
 			completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
 			currentPage = currentPage + tempPDF.GetNumPages()
@@ -327,6 +341,9 @@
 			Next
 			currentPage = currentPage + 1
 		'Minimum Manufacturer Qualifications
+			If debug Then
+				log.WriteLine("ADDING MMQ TO PDF")
+			End If
 			GetFileNames certFSO, certPath
 			For Each targetfile In files
 				splitPath = Split(targetfile.name, " ")
@@ -339,6 +356,9 @@
 			Next
 			currentPage = currentPage + 1
 		'Test Plan
+			If debug Then
+				log.WriteLine("ADDING TEST PLAN TO PDF")
+			End IF
 			GetFileNames miscFSO, miscPath
 			For Each targetfile In files
 				splitPath = Split(targetfile.name, " ")
@@ -350,6 +370,9 @@
 				End If
 			Next
 		'Products
+			If debug Then
+				log.WriteLine("ADDING PRODUCTS TO PDF")
+			End If
 			GetFileNames ccFSO, ccPath
 			For Each targetfile In files
 				splitPath = Split(targetfile.name, " ")
@@ -363,6 +386,8 @@
 	completedPDF.Close
 	completedAPP.Exit
 'Done
-Wscript.Echo "Done"
-	
-	
+If debug Then
+	log.WriteLine("Finished")
+	log.Close
+End If
+Wscript.Echo "Finished"
