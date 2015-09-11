@@ -39,7 +39,9 @@ Useful:
 	
 Log:
 	***09/10/2015***
-	Insert pages into main completedPDF file, completed:
+	Stuck on Inserting bookmarks
+	Implemented a log file if debugging is enabled
+	Insert pages into main completedPDF file, completed all:
 		Telecommunications Contractor
 		Key Personnel
 		Minimum Manufacturer Qualifications

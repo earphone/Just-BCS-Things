@@ -1,6 +1,6 @@
 'Debugging
 	Dim debug
-	debug = True
+	debug = False
 
 'Global Variables
 	Dim rowNumber
@@ -149,7 +149,7 @@
 		allWord.Quit
 		
 		'Remove unneeded pages based upon shop drawing choice
-'Open completed PDF doc
+'Open completed PDF doc and add in bookmarks for it
 		completedPDF.Open completedPath
 		'If include shop drawings
 		If shopDrawings = 6 Then
@@ -159,6 +159,12 @@
 			completedPDF.DeletePages 2, 2
 			completedPDF.DeletePages 7, 7
 		End If
+		
+		*****
+		'Add in Bookmarks for each section
+		WshShell.SendKeys "{HOME}"
+		WshShell.SendKeys "^b" & "Title Page" & "{ENTER}"
+		*****
 		
 	'Telecommunications Contractor
 		'Setup Word for TC

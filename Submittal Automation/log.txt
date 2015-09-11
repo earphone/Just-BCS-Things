@@ -1,24 +1,25 @@
 Log File
 Current Directory: C:\Users\BCST-352-BH\Documents\Higashi_Files\Useful\BCS Programming\Submittal Automation
-Short Title: Short Title
-Long Title: Full Title
-Address: Address
-Spec Section: Section
-Version: 1
+Short Title: UH HILO
+Long Title: LONG UH
+Address: HILO
+Spec Section: 169
+Version: REV 1
 Date: 09/10/2015
 Shop Drawings: 7
 Cat-Cut Folder exists.
 Cert Folder exists.
 Misc Folder exists.
 Completed Folder exists.
-Replacing LONG with Full Title
-Replacing SHORT with Short Title
+
+Replacing LONG with LONG UH
+Replacing SHORT with UH HILO
 Replacing DATE with 09/10/2015
-Replacing ADDRESS with Address
-Replacing SECTIONNO with Section
-Replacing SHORT with Short Title
+Replacing ADDRESS with HILO
+Replacing SECTIONNO with 169
+Replacing SHORT with UH HILO
 Replacing DATE with 09/10/2015
-Replacing SHORT with Short Title
+Replacing SHORT with UH HILO
 Replacing DATE with 09/10/2015
 Finished Word
      Cooper B-Line_SB13AL24FB_Cable Guide_RediRail_6.5.pdf

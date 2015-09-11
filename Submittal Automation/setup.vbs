@@ -1,6 +1,6 @@
 'Debugging
 	Dim debug
-	debug = True
+	debug = False
 
 'Global Variables
 	Dim rowNumber
