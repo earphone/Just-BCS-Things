@@ -1,15 +1,12 @@
 Basic Setup for Automating Job Submittals
 
 To Run:
-	Double click setup.vbs
-
-ToDo:
-	Add annotation of item number to pdfs
-		Write batch for all scripts
-	Put spec number into each file name
-	Possible save-all-to-pdf script	
-		Choice of whether to combine or not
-	Create a heirarcheral standard
+	Double click setup.vbs	
+	Fill in information needed
+	Will say "Finished" when completed
+	New Submittal file will be found in "Completed Submittals" Folder
+	
+	Heirarcheral Standard
 		Approved Submittals
 		Cat-Cuts
 			Maufacturer_Part#_Description_Model/Type/Color_SpecRef
@@ -18,11 +15,17 @@ ToDo:
 			"letter "
 		Completed Submittals
 		Misc Documents
-			Key Personnel List
+			Key Personnel List_SpecRef
 			Table of Contents
-			Telecommunications Contractor
-			Test Plan
-			Title Sheet
+			Telecommunications Contractor_SpecRef
+			Test Plan_SpecRef
+			Title Sheet_SpecRef
+
+ToDo:
+	Add annotation of item number to pdfs
+		Write batch for all scripts
+	Possible save-all-to-pdf script	
+		Choice of whether to combine or not
 			
 Useful:
 	use for batch:	http://www.online-tech-tips.com/computer-tips/create-windows-batch-files/
@@ -36,8 +39,15 @@ Useful:
 	list all files:	https://manojsawant.wordpress.com/2013/02/05/vbscript-list-all-the-files-in-folder-and-subfolders/
 	merge pdfs:		http://stackoverflow.com/questions/4154110/merge-multiple-pdf-files-with-vbscript
 	pdf reference:	http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/iac_api_reference.pdf
+	send keys:		http://ss64.com/vb/sendkeys.html
+	batch bookmark:	https://forums.adobe.com/thread/613362
 	
 Log:
+	***09/11/2015***
+	Rewrote some areas to have better readability
+	Added in ToC pdf into main pdf
+	Added ability to add spec refs to end of MISC file names after "_"
+	Changed words to be Replaced in some MISC files
 	***09/10/2015***
 	Stuck on Inserting bookmarks
 	Implemented a log file if debugging is enabled

@@ -1,27 +1,59 @@
 Log File
+9/11/2015 4:55:46 PM
 Current Directory: C:\Users\BCST-352-BH\Documents\Higashi_Files\Useful\BCS Programming\Submittal Automation
-Short Title: UH HILO
-Long Title: LONG UH
-Address: HILO
-Spec Section: 169
-Version: REV 1
-Date: 09/10/2015
-Shop Drawings: 7
+Short Title: Short Title
+Long Title: Full Title
+Address: Address
+Spec Section: Section
+Version: 1
+Date: 09/11/2015
+Shop Drawings: 6
 Cat-Cut Folder exists.
 Cert Folder exists.
 Misc Folder exists.
 Completed Folder exists.
 
-Replacing LONG with LONG UH
-Replacing SHORT with UH HILO
-Replacing DATE with 09/10/2015
-Replacing ADDRESS with HILO
-Replacing SECTIONNO with 169
-Replacing SHORT with UH HILO
-Replacing DATE with 09/10/2015
-Replacing SHORT with UH HILO
-Replacing DATE with 09/10/2015
+     Key Personnel List.xlsx
+     Table of Contents.xml
+     Telecommunications Contractor.docx
+     Test Plan.docx
+     Title Sheet.docx
+     ~$lecommunications Contractor.docx
+     ~$lecommunications Contractor.pdf
+     ~$st Plan.docx
+     ~$st Plan.pdf
+     ~$st Plan_4.6.docx
+     ~$tle Sheet.docx
+     ~$tle Sheet.pdf
+Replacing `LONG~ with Full Title
+Replacing `SHORT~ with Short Title
+Replacing `DATE~ with 09/11/2015
+Replacing `ADDRESS~ with Address
+Replacing `SECTIONNO~ with Section
+Created new bookmark
+Typed in title
+Pressed Enter
+
+Replacing `SHORT~ with Short Title
+Replacing `DATE~ with 09/11/2015
+Replacing `SHORT~ with Short Title
+Replacing `DATE~ with 09/11/2015
 Finished Word
+     Key Personnel List.xlsx
+     Table of Contents.xml
+     Telecommunications Contractor.docx
+     Telecommunications Contractor.pdf
+     Test Plan.docx
+     Test Plan.pdf
+     Title Sheet.docx
+     Title Sheet.pdf
+     ~$lecommunications Contractor.docx
+     ~$lecommunications Contractor.pdf
+     ~$st Plan.docx
+     ~$st Plan.pdf
+     ~$st Plan_4.6.docx
+     ~$tle Sheet.docx
+     ~$tle Sheet.pdf
      Cooper B-Line_SB13AL24FB_Cable Guide_RediRail_6.5.pdf
      Ortronics_OR-PHDHJU48_Patch Panel_48 Port Patch Panel_4.69.pdf
      TrippLite_PDUMH20_PDU_PDU and a really long empty sentence talking about nothing just trying to take up some space in order to see if excel expands_.pdf
@@ -34,6 +66,7 @@ Row Size of *48 Port Patch Panel* is *19*
 Size of TrippLite_PDUMH20_PDU_PDU and a really long empty sentence talking about nothing just trying to take up some space in order to see if excel expands_ 4
 Row Size of *PDU* is *3*
 Row Size of *PDU and a really long empty sentence talking about nothing just trying to take up some space in order to see if excel expands* is *125*
+ADDING TABLE OF CONTENTS TO PDF
 ADDING TELECOMMUNICATIONS CONTRACTOR TO PDF
 ADDING KEY PERSONNEL TO PDF
      cert BICSI exp11172015.pdf
@@ -64,8 +97,13 @@ ADDING TEST PLAN TO PDF
      Test Plan.pdf
      Title Sheet.docx
      Title Sheet.pdf
+     ~$lecommunications Contractor.docx
+     ~$lecommunications Contractor.pdf
      ~$st Plan.docx
+     ~$st Plan.pdf
+     ~$st Plan_4.6.docx
      ~$tle Sheet.docx
+     ~$tle Sheet.pdf
 ADDING PRODUCTS TO PDF
      Cooper B-Line_SB13AL24FB_Cable Guide_RediRail_6.5.pdf
      Ortronics_OR-PHDHJU48_Patch Panel_48 Port Patch Panel_4.69.pdf

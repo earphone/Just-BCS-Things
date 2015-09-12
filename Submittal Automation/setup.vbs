@@ -16,7 +16,7 @@
 'Initialize Variables
 	itemNumber = 5
 	rowNumber = 12
-	currentPage = 2
+	currentPage = 1
 
 'Get the initial information
 	'1 if ok; 2 is cancel
@@ -82,6 +82,7 @@
 		Dim log
 		Set log = CreateObject("Scripting.FileSystemObject").OpenTextFile(curDir + "\log.txt", 2, true)
 		log.WriteLine("Log File")
+		log.WriteLine(Now)
 	End If
 	
 'Get all folders and their paths
@@ -127,18 +128,35 @@
 	End If
 	
 'Word Documents
+	'Setup Word for All documents
+	GetFileNames miscFSO, miscPath
+		For Each targetfile In files
+			splitPath = Split(targetfile.name, " ")
+			Select case splitPath(0)
+				case "Telecommunications"
+				'Setup Word for TC
+					Set tcWord = CreateObject("Word.Application")
+					tcWord.Visible = False
+					Set tcDocument = tcWord.Documents.Open(miscPath + "\" + targetfile.name)
+				case "Title"
+				'Setup Word for TS
+					Set tsWord = CreateObject("Word.Application")
+					tsWord.Visible = False
+					Set tsDocument = tsWord.Documents.Open(miscPath + "\" + targetfile.name)
+				case "Test"
+				'Setup Word for TP
+					Set tpWord = CreateObject("Word.Application")
+					tpWord.Visible = False
+					Set tpDocument = tpWord.Documents.Open(miscPath + "\" + targetfile.name)
+			End Select
+		Next
 	'Title Sheet
-		'Setup Word for TS
-		Set allWord = CreateObject("Word.Application")
-		allWord.Visible = False
-		Set tsDocument = allWord.Documents.Open(miscPath + "\Title Sheet.docx")
-		
 		'Find and Replace Specific Words
-		SearchAndReplace "LONG", longTitle, allWord
-		SearchAndReplace "SHORT", shortTitle, allWord
-		SearchAndReplace "DATE", todaysDate, allWord
-		SearchAndReplace "ADDRESS", address, allWord
-		SearchAndReplace "SECTIONNO", specSection, allWord
+		SearchAndReplace "`LONG~", longTitle, tsWord
+		SearchAndReplace "`SHORT~", shortTitle, tsWord
+		SearchAndReplace "`DATE~", todaysDate, tsWord
+		SearchAndReplace "`ADDRESS~", address, tsWord
+		SearchAndReplace "`SECTIONNO~", specSection, tsWord
 		
 		'Save, Print to PDF, and Quit Word TS
 		tsDocument.Save
@@ -146,10 +164,10 @@
 		completedPath = completedPath + "\" + shortTitle + " Completed_" + singleDate + ".pdf"
 		tsDocument.saveas completedPath, 17		
 		tsDocument.Close
-		allWord.Quit
+		tsWord.Quit
 		
 		'Remove unneeded pages based upon shop drawing choice
-'Open completed PDF doc
+'Open completed PDF doc and add in bookmarks for it
 		completedPDF.Open completedPath
 		'If include shop drawings
 		If shopDrawings = 6 Then
@@ -160,37 +178,27 @@
 			completedPDF.DeletePages 7, 7
 		End If
 		
-	'Telecommunications Contractor
-		'Setup Word for TC
-		Set allWord = CreateObject("Word.Application")
-		allWord.Visible = False
-		Set tcDocument = allWord.Documents.Open(miscPath + "\Telecommunications Contractor.docx")
-		
+	'Telecommunications Contractor		
 		'Find and Replace Specific Words
-		SearchAndReplace "SHORT", shortTitle, allWord
-		SearchAndReplace "DATE", todaysDate, allWord		
+		SearchAndReplace "`SHORT~", shortTitle, tcWord
+		SearchAndReplace "`DATE~", todaysDate, tcWord		
 		
 		'Save, Print to PDF, and Quit Word TC
 		tcDocument.Save
 		tcDocument.saveas miscPath + "\Telecommunications Contractor.pdf", 17
 		tcDocument.Close
-		allWord.Quit
+		tcWord.Quit
 		
 	'Test Plan
-		'Setup Word for TP
-		Set allWord = CreateObject("Word.Application")
-		allWord.Visible = False
-		Set tpDocument = allWord.Documents.Open(miscPath + "\Test Plan.docx")
-		
 		'Find and Replace Specific Words
-		SearchAndReplace "SHORT", shortTitle, allWord
-		SearchAndReplace "DATE", todaysDate, allWord		
+		SearchAndReplace "`SHORT~", shortTitle, tpWord
+		SearchAndReplace "`DATE~", todaysDate, tpWord		
 		
 		'Save, Print to PDF, and Quit Word TP
 		tpDocument.Save
 		tpDocument.saveas miscPath + "\Test Plan.pdf", 17
 		tpDocument.Close
-		allWord.Quit
+		tpWord.Quit
 		
 	'Word Functions
 		Sub SearchAndReplace(find, replace, wordDoc)
@@ -226,6 +234,32 @@
 		tocWorksheet.Cells(3,6) = version
 		tocWorksheet.Cells(4,6) = specSection
 		
+		'Fill in spec ref for Misc Documents
+		GetFileNames miscFSO, miscPath
+		For Each targetfile In files
+			removeExt = Left(targetfile.name, InStrRev(targetfile.name,".") - 1)
+			splitPath = Split(removeExt,"_")
+			If splitPath(0) = "Telecommunications Contractor" Then
+				If ubound(splitPath) > 0 Then
+					tocWorksheet.Cells(8,4) = splitPath(1)
+				End If
+			End If
+			If splitPath(0) = "Key Personnel" Then
+				If ubound(splitPath) > 0 Then
+					tocWorksheet.Cells(9,4) = splitPath(1)
+				End If
+			End If
+			If splitPath(0) = "Minimum Manufacturer Qualifications" Then
+				If ubound(splitPath) > 0 Then
+					tocWorksheet.Cells(10,4) = splitPath(1)
+				End If
+			End If
+			If splitPath(0) = "Test Plan" Then
+				If ubound(splitPath) > 0 Then
+					tocWorksheet.Cells(11,4) = splitPath(1)
+				End If
+			End If
+		Next
 		'Fill in Product Info
 		GetFileNames ccFSO, ccPath
 		For Each targetfile In files
@@ -253,7 +287,6 @@
 				Else: tocWorksheet.Cells(rowNumber,6).EntireRow.RowHeight = 20
 				End If
 			End If
-			'tocWorksheet.Cells(rowNumber,6).EntireRow.AutoFit
 			'Model/type/color
 			tocWorksheet.Cells(rowNumber,8) = splitPath(3)
 			If debug Then
@@ -313,6 +346,14 @@
 		End Sub
 		
 	'Add Pages to PDF
+		'Table of Contents
+			If debug Then
+				log.WriteLine("ADDING TABLE OF CONTENTS TO PDF")
+			End If
+			tempPDF.Open miscPath + "\Table of Contents.pdf"
+			completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
+			currentPage = currentPage + tempPDF.GetNumPages() + 1
+			tempPDF.Close
 		'Telecommunications Contractor
 			If debug Then
 				log.WriteLine("ADDING TELECOMMUNICATIONS CONTRACTOR TO PDF")
