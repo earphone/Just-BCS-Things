@@ -21,6 +21,10 @@ To Run:
 			Test Plan_SpecRef
 			Title Sheet_SpecRef
 
+Troubleshooting if an error occurs:
+	snip error and send log to brandon.higashi@bcshawaii.com
+	close all word and excel.exe open in task manager
+
 ToDo:
 	Add annotation of item number to pdfs
 		Write batch for all scripts
@@ -43,6 +47,11 @@ Useful:
 	batch bookmark:	https://forums.adobe.com/thread/613362
 	
 Log:
+	***09/14/2015***
+	Added in "Clear PDFs From This Folder" script into Misc Documents folder
+	Added in support for spec ref to ToC for Key Personnel List_SpecRef
+	Added in reminder for closing all word, PDF, and excel documents before start
+		Helps with clearing all PDFs to rerun "setup"
 	***09/11/2015***
 	Rewrote some areas to have better readability
 	Added in ToC pdf into main pdf

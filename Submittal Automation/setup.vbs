@@ -18,14 +18,39 @@
 	rowNumber = 12
 	currentPage = 1
 
+'Reminder to close all excel, word, and PDF documents
+	warningString = "Please Close All Excel, Word, and PDF documents before continuing." + vbNewLine + "Failure to do so will cause unexpected problems." + vbNewLine + "Hit CANCEL to exit this script!"
+	warningMsg = MsgBox(warningString)
+	If warningMsg = 2 Then
+		WScript.Quit
+	End If
+	
 'Get the initial information
 	'1 if ok; 2 is cancel
 	shortTitle=InputBox("Enter the Short Project Title","Short Title","Short Title")
+		If shortTitle = "2"  Then
+			WScript.Quit
+		End If
 	longTitle=InputBox("Enter the Full Project Title","Long Title","Full Title")
+		If longTitle = "2"  Then
+			WScript.Quit
+		End If
 	address=InputBox("Enter the Full Address", "Project Address", "Address")
+		If address = "2"  Then
+			WScript.Quit
+		End If
 	specSection=InputBox("Enter the Spec Section", "Spec Section","Section")
+		If specSection = "2"  Then
+			WScript.Quit
+		End If
 	version=InputBox("What Version of Submittal is this?", "Version", "1")
+		If version = "2" Then
+			WScript.Quit
+		End If
 	todaysDate=InputBox("Enter the Date for the Submittal", "Date", Date)
+		If todaysDate = "2"  Then
+			WScript.Quit
+		End If
 	splitDate=split(todaysDate,"/")
 		Select case splitDate(0)
 			case "1"
@@ -76,9 +101,9 @@
 	Dim WshShell, curDir
 	Set WshShell = CreateObject("WScript.Shell")
 	curDir = WshShell.CurrentDirectory
-	
+		
 'Create log file
-	if debug Then
+	If debug Then
 		Dim log
 		Set log = CreateObject("Scripting.FileSystemObject").OpenTextFile(curDir + "\log.txt", 2, true)
 		log.WriteLine("Log File")
@@ -177,7 +202,18 @@
 			completedPDF.DeletePages 2, 2
 			completedPDF.DeletePages 7, 7
 		End If
-		
+	'*****
+		'WshShell.AppActivate "Acrobat.exe"
+		'Add in Bookmarks for each section
+		'WshShell.SendKeys "{HOME}"
+		'WshShell.SendKeys "^b"
+		'log.WriteLine "Created new bookmark"
+		'WshShell.SendKeys "Title Page"
+		'log.WriteLine "Typed in title"
+		'WshShell.SendKeys "{ENTER}"
+		'log.WriteLine "Pressed Enter"
+		'log.WriteLine ""
+	'*****
 	'Telecommunications Contractor		
 		'Find and Replace Specific Words
 		SearchAndReplace "`SHORT~", shortTitle, tcWord
@@ -244,7 +280,7 @@
 					tocWorksheet.Cells(8,4) = splitPath(1)
 				End If
 			End If
-			If splitPath(0) = "Key Personnel" Then
+			If splitPath(0) = "Key Personnel List" Then
 				If ubound(splitPath) > 0 Then
 					tocWorksheet.Cells(9,4) = splitPath(1)
 				End If
@@ -319,18 +355,25 @@
 		allExcel.ActiveWorkbook.Close
 		
 	'Key Personnel List
-		'Setup Excel for KPL
-		Set kplWorkbook = allExcel.Workbooks.Open(miscPath + "\Key Personnel List")
-		Set kplWorksheet = kplWorkbook.Worksheets("Sheet1")
-		
-		'Fill in KPL info
-		kplWorksheet.Cells(2,1) = longTitle
-		kplWorksheet.Cells(3,1) = address
-		
-		'Save, Print to PDF and Quit Excel KPL
-		allExcel.ActiveWorkbook.Save
-		kplWorkbook.ActiveSheet.ExportAsFixedFormat EXCEL_PDF, miscPath & "\Key Personnel List.pdf", EXCEL_QualityStandard, TRUE,FALSE,,,False
-		allExcel.ActiveWorkbook.Close
+		'Setup Excel for KPL	GetFileNames miscFSO, miscPath
+		Dim kplWorkbook
+		For Each targetfile In files
+			splitPath = Split(targetfile.name, " ")
+			If splitPath(0) = "Key" Then
+				Set kplWorkbook = allExcel.Workbooks.Open(miscPath + targetfile.name)
+				Set kplWorksheet =  kplWorkbook.Worksheets("Sheet1")
+				log.WriteLine "		Key Personnel List file found"
+				
+				'Fill in KPL info
+				kplWorksheet.Cells(2,1) = longTitle
+				kplWorksheet.Cells(3,1) = address
+				
+				'Save, Print to PDF and Quit Excel KPL
+				allExcel.ActiveWorkbook.Save
+				kplWorkbook.ActiveSheet.ExportAsFixedFormat EXCEL_PDF, miscPath & "\Key Personnel List.pdf", EXCEL_QualityStandard, TRUE,FALSE,,,False
+				allExcel.ActiveWorkbook.Close
+			End If
+		Next
 		allExcel.Quit
 	
 	'Excel Functions
