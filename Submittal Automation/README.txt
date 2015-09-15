@@ -48,7 +48,7 @@ Useful:
 	
 Log:
 	***09/14/2015***
-	Added in "Clear PDFs From This Folder" script into Misc Documents folder
+	Added in "Clear Files with Extension" script into Misc Documents folder
 	Added in support for spec ref to ToC for Key Personnel List_SpecRef
 	Added in reminder for closing all word, PDF, and excel documents before start
 		Helps with clearing all PDFs to rerun "setup"
