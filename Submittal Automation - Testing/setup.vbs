@@ -19,36 +19,36 @@
 	currentPage = 1
 
 'Reminder to close all excel, word, and PDF documents
-	warningString = "Please Close All Excel, Word, and PDF documents before continuing." + vbNewLine + "Failure to do so will cause unexpected problems." + vbNewLine + "Hit CANCEL to exit this script!"
-	warningMsg = MsgBox(warningString)
+	warningString = "Please CLOSE All Excel, Word, and PDF documents before continuing." + vbNewLine + "Also, make sure that all CAT-CUTS are named correctly and that all MISC DOCUMENTS are edited for this job." + vbNewLine + "Failure to do so will cause unexpected problems." + vbNewLine + "Hit CANCEL to exit this script!"
+	warningMsg = MsgBox(warningString,VBOkCancel)
 	If warningMsg = 2 Then
 		WScript.Quit
 	End If
 	
 'Get the initial information
-	'1 if ok; 2 is cancel
+	'1 if ok; blank is cancel
 	shortTitle=InputBox("Enter the Short Project Title","Short Title","Short Title")
-		If shortTitle = "2"  Then
+		If shortTitle = ""  Then
 			WScript.Quit
 		End If
 	longTitle=InputBox("Enter the Full Project Title","Long Title","Full Title")
-		If longTitle = "2"  Then
+		If longTitle = ""  Then
 			WScript.Quit
 		End If
 	address=InputBox("Enter the Full Address", "Project Address", "Address")
-		If address = "2"  Then
+		If address = ""  Then
 			WScript.Quit
 		End If
 	specSection=InputBox("Enter the Spec Section", "Spec Section","Section")
-		If specSection = "2"  Then
+		If specSection = ""  Then
 			WScript.Quit
 		End If
 	version=InputBox("What Version of Submittal is this?", "Version", "1")
-		If version = "2" Then
+		If version = "" Then
 			WScript.Quit
 		End If
 	todaysDate=InputBox("Enter the Date for the Submittal", "Date", Date)
-		If todaysDate = "2"  Then
+		If todaysDate = ""  Then
 			WScript.Quit
 		End If
 	splitDate=split(todaysDate,"/")
@@ -357,13 +357,15 @@
 	'Key Personnel List
 		'Setup Excel for KPL	GetFileNames miscFSO, miscPath
 		Dim kplWorkbook
+		GetFileNames miscFSO, miscPath
 		For Each targetfile In files
 			splitPath = Split(targetfile.name, " ")
 			If splitPath(0) = "Key" Then
-				Set kplWorkbook = allExcel.Workbooks.Open(miscPath + targetfile.name)
+				Set kplWorkbook = allExcel.Workbooks.Open(miscPath + "\" + targetfile.name)
 				Set kplWorksheet =  kplWorkbook.Worksheets("Sheet1")
-				log.WriteLine "		Key Personnel List file found"
-				
+				If debut Then
+					log.WriteLine "		Key Personnel List file found"
+				End If
 				'Fill in KPL info
 				kplWorksheet.Cells(2,1) = longTitle
 				kplWorksheet.Cells(3,1) = address

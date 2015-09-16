@@ -45,5 +45,6 @@ Troubleshooting if an error occurs:
 		Then close all word and excel.exe open in task manager
 ==============================================================================
 Notes:
+	If Running again, Clear all PDF's from Misc Documents
 	"Clear Files with Extension" deletes files in the same folder
 		Gets user prompt for file extension
