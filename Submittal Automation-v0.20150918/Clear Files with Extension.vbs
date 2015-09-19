@@ -21,6 +21,7 @@
 			WScript.Quit
 		ElseIf removalInput = "" Then
 			MsgBox "There was no input" + vbNewLine + "Exiting . . ."
+			WScript.Quit
 		End If
 		removalInput = "." + removalInput
 		removalInputLength = Len(removalInput)

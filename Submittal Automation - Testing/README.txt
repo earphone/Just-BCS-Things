@@ -21,7 +21,7 @@ To Run:
 	3:	Add in item number comment in top right according to 
 			"Table of Contents"
 	4:	Circle/bubble product number
-	5:	Add in bookmarks
+	5:	Check if bookmarks are to the correct places
 ===============================================================================
 Heirarcheral Standard:
 
@@ -44,10 +44,17 @@ Troubleshooting if an error occurs:
 	Snip error and send log to brandon.higashi@bcshawaii.com
 		Then close all word and excel.exe open in task manager
 ==============================================================================
+BUGS:
+	Chance where PDF won't come to front
+		Click on PDF to bring to foreground
+		Redo title page bookmark
+	    Possible fix: move create title page bookmark with others
+==============================================================================
 Notes:
 	If Running again, Clear all PDF's from Misc Documents
 	"Clear Files with Extension" deletes files in the same folder
 		Gets user prompt for file extension
+	Can't run from a zip file
 ==============================================================================
 ToDo:
 	Add annotation of item number to pdfs
@@ -69,8 +76,15 @@ Useful:
 	pdf reference:	http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/iac_api_reference.pdf
 	send keys:		http://ss64.com/vb/sendkeys.html
 	batch bookmark:	https://forums.adobe.com/thread/613362
+		Possilby Show pdf and use send keys
+	PDBookmark:	http://forums.planetpdf.com/cant-title-bookmarks_topic958.html
 ==============================================================================	
 Log:
+	***09/18/2015***
+	Able to add bookmarks but cannot work unless one useless bookmark is made first
+		Used PDF API AVDoc Object
+		Used sendKeys function in script
+		User should not use keyboard or click things when running script
 	***09/15/2015***
 	Resolved an issue where Key Personnel List was not being turned into a PDF
 		and therefore not being added into final file

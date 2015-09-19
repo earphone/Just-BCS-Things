@@ -1,6 +1,6 @@
 'Debugging
 	Dim debug
-	debug = False
+	debug = True
 
 'Global Variables
 	Dim rowNumber
@@ -19,7 +19,7 @@
 	currentPage = 1
 
 'Reminder to close all excel, word, and PDF documents
-	warningString = "Please CLOSE All Excel, Word, and PDF documents before continuing." + vbNewLine + "Also, make sure that all CAT-CUTS are named correctly and that all MISC DOCUMENTS are edited for this job." + vbNewLine + "Failure to do so will cause unexpected problems." + vbNewLine + "Hit CANCEL to exit this script!"
+	warningString = "Please CLOSE All Excel, Word, and PDF documents before continuing." + vbNewLine + "Also, make sure that all CAT-CUTS are named correctly and that all MISC DOCUMENTS are edited for this job." + vbNewLine + "Failure to do so WILL cause unexpected problems." + vbNewLine + "Hit CANCEL to exit this script!"
 	warningMsg = MsgBox(warningString,VBOkCancel)
 	If warningMsg = 2 Then
 		WScript.Quit
@@ -112,18 +112,22 @@
 	
 'Get all folders and their paths
 	'Get Cat-Cut folder
+	Dim ccFSO, ccPath
 	Set ccFSO = CreateObject("Scripting.FileSystemObject")
 	ccPath = curDir + "\Cat-Cuts"
 
 	'Get Certificate folder
+	Dim certFSO, certPath
 	Set certFSO = CreateObject("Scripting.FileSystemObject")
 	certPath = curDir + "\Certificates"
 
 	'Get Misc Document folder
+	Dim miscFSO, miscPath
 	Set miscFSO = CreateObject("Scripting.FileSystemObject")
 	miscPath = curDir + "\Misc Documents"
 
 	'Get Completed Submittals folder
+	Dim completedFSO, completedPath
 	Set completedFSO = CreateObject("Scripting.FileSystemObject")
 	completedPath = curDir + "\Completed Submittals"
 
@@ -198,22 +202,25 @@
 		If shopDrawings = 6 Then
 			completedPDF.DeletePages 1,1
 		'If don't include shop drawings
-		Else:
+		Else
 			completedPDF.DeletePages 2, 2
 			completedPDF.DeletePages 7, 7
 		End If
-	'*****
-		'WshShell.AppActivate "Acrobat.exe"
-		'Add in Bookmarks for each section
-		'WshShell.SendKeys "{HOME}"
-		'WshShell.SendKeys "^b"
-		'log.WriteLine "Created new bookmark"
-		'WshShell.SendKeys "Title Page"
-		'log.WriteLine "Typed in title"
-		'WshShell.SendKeys "{ENTER}"
-		'log.WriteLine "Pressed Enter"
-		'log.WriteLine ""
-	'*****
+		
+'Do Title Page Bookmark
+		Set completedAVDoc = completedPDF.OpenAVDoc(completedPath)
+		WshShell.AppActivate "Adobe"
+		WScript.Sleep 150
+		WshShell.SendKeys "{HOME}"
+		WScript.Sleep 150
+		WshShell.SendKeys "^b"
+		WScript.Sleep 150
+		WshShell.SendKeys "^b"
+		WScript.Sleep 150
+		WshShell.SendKeys "Title Page"
+		WScript.Sleep 150
+		WshShell.SendKeys "{ENTER}"
+		
 	'Telecommunications Contractor		
 		'Find and Replace Specific Words
 		SearchAndReplace "`SHORT~", shortTitle, tcWord
@@ -320,7 +327,8 @@
 			If Len(tocWorksheet.Cells(rowNumber,6)) > 45 Then
 				If Len(tocWorksheet.Cells(rowNumber,6)) > 90 Then
 					tocWorksheet.Cells(rowNumber,6).EntireRow.RowHeight = 30
-				Else: tocWorksheet.Cells(rowNumber,6).EntireRow.RowHeight = 20
+				Else
+					tocWorksheet.Cells(rowNumber,6).EntireRow.RowHeight = 20
 				End If
 			End If
 			'Model/type/color
@@ -331,7 +339,8 @@
 			If Len(tocWorksheet.Cells(rowNumber,8)) > 45 Then
 				If Len(tocWorksheet.Cells(rowNumber,8)) > 90 Then
 					tocWorksheet.Cells(rowNumber,8).EntireRow.RowHeight = 30
-				Else: tocWorksheet.Cells(rowNumber,8).EntireRow.RowHeight = 20
+				Else
+					tocWorksheet.Cells(rowNumber,8).EntireRow.RowHeight = 20
 				End If
 			End If
 			'Part Number
@@ -391,12 +400,40 @@
 		End Sub
 		
 	'Add Pages to PDF
+		'Add bookmark for Table of Contents
+		WshShell.AppActivate "Adobe"
+		WScript.Sleep 150
+		WshShell.SendKeys "^+n"
+		WScript.Sleep 150
+		WshShell.SendKeys "2"
+		WScript.Sleep 150
+		WshShell.SendKeys "{ENTER}"
+		WScript.Sleep 150
+		WshShell.SendKeys "^b"
+		WScript.Sleep 150
+		WshShell.SendKeys "Table of Contents"
+		WScript.Sleep 150
+		WshShell.SendKeys "{ENTER}"
 		'Table of Contents
 			If debug Then
 				log.WriteLine("ADDING TABLE OF CONTENTS TO PDF")
 			End If
 			tempPDF.Open miscPath + "\Table of Contents.pdf"
 			completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
+			'Add ToC bookmark
+				WshShell.AppActivate "Adobe"
+				WScript.Sleep 150
+				WshShell.SendKeys "^+n"
+				WScript.Sleep 150
+				WshShell.SendKeys currentPage + 2
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
+				WScript.Sleep 150
+				WshShell.SendKeys "^b"
+				WScript.Sleep 150
+				WshShell.SendKeys "Materials and Product Listing"
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
 			currentPage = currentPage + tempPDF.GetNumPages() + 1
 			tempPDF.Close
 		'Telecommunications Contractor
@@ -405,6 +442,34 @@
 			End If
 			tempPDF.Open miscPath + "\Telecommunications Contractor.pdf"
 			completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
+			'Add Telecommunications Contractor Section bookmark	
+				WshShell.AppActivate "Adobe"	
+				WScript.Sleep 150
+				WshShell.SendKeys "^+n"
+				WScript.Sleep 150
+				WshShell.SendKeys currentPage+1
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
+				WScript.Sleep 150
+				WshShell.SendKeys "^b"
+				WScript.Sleep 150
+				WshShell.SendKeys "Telecommunications Contractor, Section 1"
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
+			'Add Telecommunications Contractor Item bookmark	
+				WshShell.AppActivate "Adobe"	
+				WScript.Sleep 150
+				WshShell.SendKeys "^+n"
+				WScript.Sleep 150
+				WshShell.SendKeys currentPage+2
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
+				WScript.Sleep 150
+				WshShell.SendKeys "^b"
+				WScript.Sleep 150
+				WshShell.SendKeys "Telecommunications Contractor, Item #1"
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
 			currentPage = currentPage + tempPDF.GetNumPages() + 1
 			tempPDF.Close
 		'Key Personnel
@@ -413,6 +478,34 @@
 			End If
 			tempPDF.Open miscPath + "\Key Personnel List.pdf"
 			completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
+			'Add Key Personnel Section bookmark	
+				WshShell.AppActivate "Adobe"	
+				WScript.Sleep 150
+				WshShell.SendKeys "^+n"
+				WScript.Sleep 150
+				WshShell.SendKeys currentPage+1
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
+				WScript.Sleep 150
+				WshShell.SendKeys "^b"
+				WScript.Sleep 150
+				WshShell.SendKeys "Key Personnel, Section 2"
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
+			'Add Key Personnel Item bookmark	
+				WshShell.AppActivate "Adobe"	
+			WScript.Sleep 150
+				WshShell.SendKeys "^+n"
+				WScript.Sleep 150
+				WshShell.SendKeys currentPage+2
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
+				WScript.Sleep 150
+				WshShell.SendKeys "^b"
+				WScript.Sleep 150
+				WshShell.SendKeys "Key Personnel, Item #2"
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
 			currentPage = currentPage + tempPDF.GetNumPages()
 			tempPDF.Close
 			GetFileNames certFSO, certPath
@@ -421,6 +514,20 @@
 				If splitPath(0) = "cert" Then
 					tempPDF.Open targetfile
 					completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
+					'Add Certificate Item bookmark
+						WshShell.AppActivate "Adobe"
+						WScript.Sleep 150
+						WshShell.SendKeys "^+n"
+						WScript.Sleep 150
+						WshShell.SendKeys currentPage+2
+						WScript.Sleep 150
+						WshShell.SendKeys "{ENTER}"
+						WScript.Sleep 150
+						WshShell.SendKeys "^b"
+						WScript.Sleep 150
+						WshShell.SendKeys splitPath(1) + " Certificate"
+						WScript.Sleep 150
+						WshShell.SendKeys "{ENTER}"
 					currentPage = currentPage + tempPDF.GetNumPages()
 					tempPDF.Close
 				End If
@@ -430,12 +537,40 @@
 			If debug Then
 				log.WriteLine("ADDING MMQ TO PDF")
 			End If
+			'Add Minimum Manufacturer Qualifications bookmark	
+				WshShell.AppActivate "Adobe"	
+				WScript.Sleep 150
+				WshShell.SendKeys "^+n"
+				WScript.Sleep 150
+				WshShell.SendKeys currentPage+1
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
+				WScript.Sleep 150
+				WshShell.SendKeys "^b"
+				WScript.Sleep 150
+				WshShell.SendKeys "Minimum Manufacturer Qualifications, Section 3"
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
 			GetFileNames certFSO, certPath
 			For Each targetfile In files
 				splitPath = Split(targetfile.name, " ")
 				If splitPath(0) = "letter" Then
 					tempPDF.Open targetfile
 					completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
+					'Add Manufacturer Letter Item bookmark
+						WshShell.AppActivate "Adobe"
+						WScript.Sleep 150
+						WshShell.SendKeys "^+n"
+						WScript.Sleep 150
+						WshShell.SendKeys currentPage+2
+						WScript.Sleep 150
+						WshShell.SendKeys "{ENTER}"
+						WScript.Sleep 150	
+						WshShell.SendKeys "^b"
+						WScript.Sleep 150
+						WshShell.SendKeys LEFT(splitPath(1), (LEN(splitPath(1))-4)) + " " + splitPath(0)
+						WScript.Sleep 150
+						WshShell.SendKeys "{ENTER}"
 					currentPage = currentPage + tempPDF.GetNumPages()
 					tempPDF.Close
 				End If
@@ -448,9 +583,37 @@
 			GetFileNames miscFSO, miscPath
 			For Each targetfile In files
 				splitPath = Split(targetfile.name, " ")
-				If splitPath(0) = "Test" Then 
+				If splitPath(1) = "Plan.pdf" Then 
 					tempPDF.Open targetfile
 					completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
+					'Add Test Plan section bookmark	
+						WshShell.AppActivate "Adobe"	
+						WScript.Sleep 150
+						WshShell.SendKeys "^+n"
+						WScript.Sleep 150
+						WshShell.SendKeys currentPage+1
+						WScript.Sleep 150
+						WshShell.SendKeys "{ENTER}"
+						WScript.Sleep 150
+						WshShell.SendKeys "^b"
+						WScript.Sleep 150
+						WshShell.SendKeys "Test Plan, Section 4"
+						WScript.Sleep 150
+						WshShell.SendKeys "{ENTER}"
+					'Add Test Plan item bookmark	
+						WshShell.AppActivate "Adobe"	
+						WScript.Sleep 150
+						WshShell.SendKeys "^+n"
+						WScript.Sleep 150
+						WshShell.SendKeys currentPage+2
+						WScript.Sleep 150
+						WshShell.SendKeys "{ENTER}"
+						WScript.Sleep 150
+						WshShell.SendKeys "^b"
+						WScript.Sleep 150
+						WshShell.SendKeys "Test Plan, Item #4"
+						WScript.Sleep 150
+						WshShell.SendKeys "{ENTER}"
 					currentPage = currentPage + tempPDF.GetNumPages() + 1
 					tempPDF.Close
 				End If
@@ -459,21 +622,72 @@
 			If debug Then
 				log.WriteLine("ADDING PRODUCTS TO PDF")
 			End If
+			'Add Products section bookmark	
+				WshShell.AppActivate "Adobe"	
+				WScript.Sleep 150
+				WshShell.SendKeys "^+n"
+				WScript.Sleep 150
+				WshShell.SendKeys currentPage+1
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
+				WScript.Sleep 150
+				WshShell.SendKeys "^b"
+				WScript.Sleep 150
+				WshShell.SendKeys "Product Data, Section 5"
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
 			GetFileNames ccFSO, ccPath
+			itemNumber = 5
 			For Each targetfile In files
-				splitPath = Split(targetfile.name, " ")
+				splitPath = Split(targetfile.name, "_")
 				tempPDF.Open targetfile
 				completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
+				'Add Products section bookmark	
+					WshShell.AppActivate "Adobe"
+					WScript.Sleep 150	
+					WshShell.SendKeys "^+n"
+					WScript.Sleep 150
+					WshShell.SendKeys currentPage+2
+					WScript.Sleep 150
+					WshShell.SendKeys "{ENTER}"
+					WScript.Sleep 150
+					WshShell.SendKeys "^b"
+					WScript.Sleep 150
+					WshShell.SendKeys splitPath(2) + ", Item #" + CStr(itemNumber)
+					WScript.Sleep 150
+					WshShell.SendKeys "{ENTER}"
 				currentPage = currentPage + tempPDF.GetNumPages()
 				tempPDF.Close
+				itemNumber = itemNumber + 1
 			Next
+		'Shop Drawings Bookmark
+			If shopDrawings = 6 Then
+				WshShell.AppActivate "Adobe"
+				WScript.Sleep 150	
+				WshShell.SendKeys "^+n"
+				WScript.Sleep 150
+				WshShell.SendKeys currentPage+2
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
+				WScript.Sleep 150
+				WshShell.SendKeys "^b"
+				WScript.Sleep 150
+				WshShell.SendKeys "Shop Drawings"
+				WScript.Sleep 150
+				WshShell.SendKeys "{ENTER}"
+			End If
+			
 'Close completed PDF app
 	completedPDF.Save 0, completedPath
-	completedPDF.Close
+	completedPDF.CLOSE
 	completedAPP.Exit
 'Done
 If debug Then
 	log.WriteLine("Finished")
 	log.Close
 End If
-Wscript.Echo "Finished"
+If shopDrawings = 6 Then
+	WScript.Echo "Finished" + vbNewLine + "Please add in your shop drawings to the finished file located in the following path:" + vbNewLine + completedPath
+Else
+	WScript.Echo "Finished" + vbNewLine + "Please double check your finished file in the following path:" + vbNewLine + completedPath
+End If

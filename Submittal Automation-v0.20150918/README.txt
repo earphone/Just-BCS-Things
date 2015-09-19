@@ -21,7 +21,7 @@ To Run:
 	3:	Add in item number comment in top right according to 
 			"Table of Contents"
 	4:	Circle/bubble product number
-	5:	Add in bookmarks
+	5:	Check if bookmarks are to the correct places
 ===============================================================================
 Heirarcheral Standard:
 
