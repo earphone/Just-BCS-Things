@@ -1,6 +1,6 @@
 # Just BCS Things
 ##### This is just a bunch of random scripts / macros that I've written at my time at BCS for their own uses or to help automate things
-*If there are any errors or comments that you find. Please open an issue.*
+*If there are any errors or comments that you find. Please open an [issue](https://github.com/earphone/Just-BCS-Things/issues).*
 **Thank you!!!**
 #### [Random Scripts] (https://github.com/earphone/Just-BCS-Things)
 
