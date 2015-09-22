@@ -209,17 +209,12 @@
 		
 'Do Title Page Bookmark
 		Set completedAVDoc = completedPDF.OpenAVDoc(completedPath)
-		WshShell.AppActivate "Adobe"
-		WScript.Sleep 150
-		WshShell.SendKeys "{HOME}"
-		WScript.Sleep 150
-		WshShell.SendKeys "^b"
-		WScript.Sleep 150
-		WshShell.SendKeys "^b"
-		WScript.Sleep 150
-		WshShell.SendKeys "Title Page"
-		WScript.Sleep 150
-		WshShell.SendKeys "{ENTER}"
+		Set completedBookmark = CreateObject("AcroExch.PDBookmark")
+		Set pageView = completedAVDoc.GetAVPageView()
+		pageView.GoTo(0)
+		completedAPP.MenuItemExecute "NewBookmark"
+		completedBookmark.GetByTitle completedPDF, "Untitled"
+		completedBookmark.SetTitle "Title Page"
 		
 	'Telecommunications Contractor		
 		'Find and Replace Specific Words
@@ -401,19 +396,10 @@
 		
 	'Add Pages to PDF
 		'Add bookmark for Table of Contents
-		WshShell.AppActivate "Adobe"
-		WScript.Sleep 150
-		WshShell.SendKeys "^+n"
-		WScript.Sleep 150
-		WshShell.SendKeys "2"
-		WScript.Sleep 150
-		WshShell.SendKeys "{ENTER}"
-		WScript.Sleep 150
-		WshShell.SendKeys "^b"
-		WScript.Sleep 150
-		WshShell.SendKeys "Table of Contents"
-		WScript.Sleep 150
-		WshShell.SendKeys "{ENTER}"
+		pageView.GoTo(1)
+		completedAPP.MenuItemExecute "NewBookmark"
+		completedBookmark.GetByTitle completedPDF, "Untitled"
+		completedBookmark.SetTitle "Table of Contents"
 		'Table of Contents
 			If debug Then
 				log.WriteLine("ADDING TABLE OF CONTENTS TO PDF")
@@ -421,19 +407,10 @@
 			tempPDF.Open miscPath + "\Table of Contents.pdf"
 			completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
 			'Add ToC bookmark
-				WshShell.AppActivate "Adobe"
-				WScript.Sleep 150
-				WshShell.SendKeys "^+n"
-				WScript.Sleep 150
-				WshShell.SendKeys currentPage + 2
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
-				WScript.Sleep 150
-				WshShell.SendKeys "^b"
-				WScript.Sleep 150
-				WshShell.SendKeys "Materials and Product Listing"
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
+				completedAVDoc.GetAVPageView().GoTo 2
+				completedAPP.MenuItemExecute "NewBookmark"
+				completedBookmark.GetByTitle completedPDF, "Untitled"
+				completedBookmark.SetTitle "Material and Product Listing"
 			currentPage = currentPage + tempPDF.GetNumPages() + 1
 			tempPDF.Close
 		'Telecommunications Contractor
@@ -442,34 +419,16 @@
 			End If
 			tempPDF.Open miscPath + "\Telecommunications Contractor.pdf"
 			completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
-			'Add Telecommunications Contractor Section bookmark	
-				WshShell.AppActivate "Adobe"	
-				WScript.Sleep 150
-				WshShell.SendKeys "^+n"
-				WScript.Sleep 150
-				WshShell.SendKeys currentPage+1
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
-				WScript.Sleep 150
-				WshShell.SendKeys "^b"
-				WScript.Sleep 150
-				WshShell.SendKeys "Telecommunications Contractor, Section 1"
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
-			'Add Telecommunications Contractor Item bookmark	
-				WshShell.AppActivate "Adobe"	
-				WScript.Sleep 150
-				WshShell.SendKeys "^+n"
-				WScript.Sleep 150
-				WshShell.SendKeys currentPage+2
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
-				WScript.Sleep 150
-				WshShell.SendKeys "^b"
-				WScript.Sleep 150
-				WshShell.SendKeys "Telecommunications Contractor, Item #1"
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
+			'Add Telecommunications Contractor Section bookmark
+				completedAVDoc.GetAVPageView().GoTo currentPage	
+				completedAPP.MenuItemExecute "NewBookmark"
+				completedBookmark.GetByTitle completedPDF, "Untitled"
+				completedBookmark.SetTitle "Telecommunications Contractor, Section 1"
+			'Add Telecommunications Contractor Item bookmark
+				completedAVDoc.GetAVPageView().GoTo currentPage + 1
+				completedAPP.MenuItemExecute "NewBookmark"
+				completedBookmark.GetByTitle completedPDF, "Untitled"
+				completedBookmark.SetTitle "Telecommunications Contractor, Item #1"
 			currentPage = currentPage + tempPDF.GetNumPages() + 1
 			tempPDF.Close
 		'Key Personnel
@@ -479,33 +438,15 @@
 			tempPDF.Open miscPath + "\Key Personnel List.pdf"
 			completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
 			'Add Key Personnel Section bookmark	
-				WshShell.AppActivate "Adobe"	
-				WScript.Sleep 150
-				WshShell.SendKeys "^+n"
-				WScript.Sleep 150
-				WshShell.SendKeys currentPage+1
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
-				WScript.Sleep 150
-				WshShell.SendKeys "^b"
-				WScript.Sleep 150
-				WshShell.SendKeys "Key Personnel, Section 2"
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
-			'Add Key Personnel Item bookmark	
-				WshShell.AppActivate "Adobe"	
-			WScript.Sleep 150
-				WshShell.SendKeys "^+n"
-				WScript.Sleep 150
-				WshShell.SendKeys currentPage+2
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
-				WScript.Sleep 150
-				WshShell.SendKeys "^b"
-				WScript.Sleep 150
-				WshShell.SendKeys "Key Personnel, Item #2"
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
+				completedAVDoc.GetAVPageView().GoTo currentPage
+				completedAPP.MenuItemExecute "NewBookmark"
+				completedBookmark.GetByTitle completedPDF, "Untitled"
+				completedBookmark.SetTitle "Key Personnel, Section 2"
+			'Add Key Personnel Item bookmark
+				completedAVDoc.GetAVPageView().GoTo currentPage + 1
+				completedAPP.MenuItemExecute "NewBookmark"
+				completedBookmark.GetByTitle completedPDF, "Untitled"
+				completedBookmark.SetTitle "Key Personnel, Item #2"
 			currentPage = currentPage + tempPDF.GetNumPages()
 			tempPDF.Close
 			GetFileNames certFSO, certPath
@@ -515,19 +456,10 @@
 					tempPDF.Open targetfile
 					completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
 					'Add Certificate Item bookmark
-						WshShell.AppActivate "Adobe"
-						WScript.Sleep 150
-						WshShell.SendKeys "^+n"
-						WScript.Sleep 150
-						WshShell.SendKeys currentPage+2
-						WScript.Sleep 150
-						WshShell.SendKeys "{ENTER}"
-						WScript.Sleep 150
-						WshShell.SendKeys "^b"
-						WScript.Sleep 150
-						WshShell.SendKeys splitPath(1) + " Certificate"
-						WScript.Sleep 150
-						WshShell.SendKeys "{ENTER}"
+						completedAVDoc.GetAVPageView().GoTo currentPage + 1
+						completedAPP.MenuItemExecute "NewBookmark"
+						completedBookmark.GetByTitle completedPDF, "Untitled"
+						completedBookmark.SetTitle splitPath(1) + " Certificate"
 					currentPage = currentPage + tempPDF.GetNumPages()
 					tempPDF.Close
 				End If
@@ -538,39 +470,21 @@
 				log.WriteLine("ADDING MMQ TO PDF")
 			End If
 			'Add Minimum Manufacturer Qualifications bookmark	
-				WshShell.AppActivate "Adobe"	
-				WScript.Sleep 150
-				WshShell.SendKeys "^+n"
-				WScript.Sleep 150
-				WshShell.SendKeys currentPage+1
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
-				WScript.Sleep 150
-				WshShell.SendKeys "^b"
-				WScript.Sleep 150
-				WshShell.SendKeys "Minimum Manufacturer Qualifications, Section 3"
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
+				completedAVDoc.GetAVPageView().GoTo currentPage
+				completedAPP.MenuItemExecute "NewBookmark"
+				completedBookmark.GetByTitle completedPDF, "Untitled"
+				completedBookmark.SetTitle "Minimum Manufacturer Qualifications, Section 3"
 			GetFileNames certFSO, certPath
 			For Each targetfile In files
 				splitPath = Split(targetfile.name, " ")
 				If splitPath(0) = "letter" Then
 					tempPDF.Open targetfile
 					completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
-					'Add Manufacturer Letter Item bookmark
-						WshShell.AppActivate "Adobe"
-						WScript.Sleep 150
-						WshShell.SendKeys "^+n"
-						WScript.Sleep 150
-						WshShell.SendKeys currentPage+2
-						WScript.Sleep 150
-						WshShell.SendKeys "{ENTER}"
-						WScript.Sleep 150	
-						WshShell.SendKeys "^b"
-						WScript.Sleep 150
-						WshShell.SendKeys LEFT(splitPath(1), (LEN(splitPath(1))-4)) + " " + splitPath(0)
-						WScript.Sleep 150
-						WshShell.SendKeys "{ENTER}"
+					'Add Manufacturer Letter Item bookmark	
+					completedAVDoc.GetAVPageView().GoTo currentPage + 1
+					completedAPP.MenuItemExecute "NewBookmark"
+					completedBookmark.GetByTitle completedPDF, "Untitled"
+					completedBookmark.SetTitle LEFT(splitPath(1), (LEN(splitPath(1))-4)) + " " + splitPath(0)
 					currentPage = currentPage + tempPDF.GetNumPages()
 					tempPDF.Close
 				End If
@@ -586,34 +500,16 @@
 				If splitPath(1) = "Plan.pdf" Then 
 					tempPDF.Open targetfile
 					completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
-					'Add Test Plan section bookmark	
-						WshShell.AppActivate "Adobe"	
-						WScript.Sleep 150
-						WshShell.SendKeys "^+n"
-						WScript.Sleep 150
-						WshShell.SendKeys currentPage+1
-						WScript.Sleep 150
-						WshShell.SendKeys "{ENTER}"
-						WScript.Sleep 150
-						WshShell.SendKeys "^b"
-						WScript.Sleep 150
-						WshShell.SendKeys "Test Plan, Section 4"
-						WScript.Sleep 150
-						WshShell.SendKeys "{ENTER}"
+					'Add Test Plan section bookmark		
+						completedAVDoc.GetAVPageView().GoTo currentPage
+						completedAPP.MenuItemExecute "NewBookmark"
+						completedBookmark.GetByTitle completedPDF, "Untitled"
+						completedBookmark.SetTitle "Test Plan, Section 4"
 					'Add Test Plan item bookmark	
-						WshShell.AppActivate "Adobe"	
-						WScript.Sleep 150
-						WshShell.SendKeys "^+n"
-						WScript.Sleep 150
-						WshShell.SendKeys currentPage+2
-						WScript.Sleep 150
-						WshShell.SendKeys "{ENTER}"
-						WScript.Sleep 150
-						WshShell.SendKeys "^b"
-						WScript.Sleep 150
-						WshShell.SendKeys "Test Plan, Item #4"
-						WScript.Sleep 150
-						WshShell.SendKeys "{ENTER}"
+						completedAVDoc.GetAVPageView().GoTo currentPage + 1
+						completedAPP.MenuItemExecute "NewBookmark"
+						completedBookmark.GetByTitle completedPDF, "Untitled"
+						completedBookmark.SetTitle "Test Plan, Item #4"
 					currentPage = currentPage + tempPDF.GetNumPages() + 1
 					tempPDF.Close
 				End If
@@ -622,59 +518,32 @@
 			If debug Then
 				log.WriteLine("ADDING PRODUCTS TO PDF")
 			End If
-			'Add Products section bookmark	
-				WshShell.AppActivate "Adobe"	
-				WScript.Sleep 150
-				WshShell.SendKeys "^+n"
-				WScript.Sleep 150
-				WshShell.SendKeys currentPage+1
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
-				WScript.Sleep 150
-				WshShell.SendKeys "^b"
-				WScript.Sleep 150
-				WshShell.SendKeys "Product Data, Section 5"
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
+			'Add Products section bookmark		
+				completedAVDoc.GetAVPageView().GoTo currentPage
+				completedAPP.MenuItemExecute "NewBookmark"
+				completedBookmark.GetByTitle completedPDF, "Untitled"
+				completedBookmark.SetTitle "Product Data, Section 5"
 			GetFileNames ccFSO, ccPath
 			itemNumber = 5
 			For Each targetfile In files
 				splitPath = Split(targetfile.name, "_")
 				tempPDF.Open targetfile
 				completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
-				'Add Products section bookmark	
-					WshShell.AppActivate "Adobe"
-					WScript.Sleep 150	
-					WshShell.SendKeys "^+n"
-					WScript.Sleep 150
-					WshShell.SendKeys currentPage+2
-					WScript.Sleep 150
-					WshShell.SendKeys "{ENTER}"
-					WScript.Sleep 150
-					WshShell.SendKeys "^b"
-					WScript.Sleep 150
-					WshShell.SendKeys splitPath(2) + ", Item #" + CStr(itemNumber)
-					WScript.Sleep 150
-					WshShell.SendKeys "{ENTER}"
+				'Add Products section bookmark		
+					completedAVDoc.GetAVPageView().GoTo currentPage + 1
+					completedAPP.MenuItemExecute "NewBookmark"
+					completedBookmark.GetByTitle completedPDF, "Untitled"
+					completedBookmark.SetTitle splitPath(2) + ", Item #" + CStr(itemNumber)
 				currentPage = currentPage + tempPDF.GetNumPages()
 				tempPDF.Close
 				itemNumber = itemNumber + 1
 			Next
 		'Shop Drawings Bookmark
 			If shopDrawings = 6 Then
-				WshShell.AppActivate "Adobe"
-				WScript.Sleep 150	
-				WshShell.SendKeys "^+n"
-				WScript.Sleep 150
-				WshShell.SendKeys currentPage+2
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
-				WScript.Sleep 150
-				WshShell.SendKeys "^b"
-				WScript.Sleep 150
-				WshShell.SendKeys "Shop Drawings"
-				WScript.Sleep 150
-				WshShell.SendKeys "{ENTER}"
+				completedAVDoc.GetAVPageView().GoTo currentPage + 1
+				completedAPP.MenuItemExecute "NewBookmark"
+				completedBookmark.GetByTitle completedPDF, "Untitled"
+				completedBookmark.SetTitle "Shop Drawings, Section 6"
 			End If
 			
 'Close completed PDF app

@@ -7,21 +7,21 @@ To Run:
     B:	Edit all Misc Documents per job 
     C:	Double click setup.vbs
     D:	Fill in information needed when prompted
-	1:	Short Title
-	2:	Full Title
-	3:	Address
-	4:	Section
-	5:	Version
-	6:	Date
+		1:	Short Title
+		2:	Full Title
+		3:	Address
+		4:	Section
+		5:	Version
+		6:	Date
     E:	Will say "Finished" when completed
     F:	New Submittal file will be found in "Completed Submittals" Folder
     G:	Proofread and Edit Submittal
     	1:	Remove Unneeded Minimum manufacturer qualification letters
-	2:	Check if section title pages are in the right places
-	3:	Add in item number comment in top right according to 
-			"Table of Contents"
-	4:	Circle/bubble product number
-	5:	Check if bookmarks are to the correct places
+		2:	Check if section title pages are in the right places
+		3:	Add in item number comment in top right according to 
+				"Table of Contents"
+		4:	Circle/bubble product number
+		5:	Check if bookmarks are to the correct pages
 ===============================================================================
 Heirarcheral Standard:
 
@@ -80,6 +80,8 @@ Useful:
 	PDBookmark:	http://forums.planetpdf.com/cant-title-bookmarks_topic958.html
 ==============================================================================	
 Log:
+	***09/21/2015***
+	Changed how bookmarks are implemented (not using sendKeys anymore)
 	***09/18/2015***
 	Able to add bookmarks but cannot work unless one useless bookmark is made first
 		Used PDF API AVDoc Object
