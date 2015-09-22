@@ -5,12 +5,12 @@
 #### [Random Scripts] (https://github.com/earphone/Just-BCS-Things)
 
 * [AddBookmark2PDF](https://github.com/earphone/Just-BCS-Things/tree/master/Random%20Scripts/AddBookmark2PDF)
----This is a small script to help me by automating bookmark additions to a PDF.
---* Fill in 1st column of the excel with page numbers
---* Fill in 2nd column of the excel with bookmark titles associated with page number
---* Double click vbs script to run it
---* It'll ask you to choose a PDF file to add the bookmarks to
---* Says "Finished" when done
+   This is a small script to help me by automating bookmark additions to a PDF.
+  * Fill in 1st column of the excel with page numbers
+  * Fill in 2nd column of the excel with bookmark titles associated with page number
+  * Double click vbs script to run it
+  * It'll ask you to choose a PDF file to add the bookmarks to
+  * Says "Finished" when done
 
 * [Clear Files with Extension](https://github.com/earphone/Just-BCS-Things/blob/master/Random%20Scripts/Clear%20Files%20with%20Extension.vbs)
 ---This is an even smaller script that deletes files in the same folder as the script of a certain extension that a user inputs.
