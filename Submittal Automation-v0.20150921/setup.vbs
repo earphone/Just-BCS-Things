@@ -207,15 +207,6 @@
 			completedPDF.DeletePages 7, 7
 		End If
 		
-'Do Title Page Bookmark
-		Set completedAVDoc = completedPDF.OpenAVDoc(completedPath)
-		Set completedBookmark = CreateObject("AcroExch.PDBookmark")
-		Set pageView = completedAVDoc.GetAVPageView()
-		pageView.GoTo(0)
-		completedAPP.MenuItemExecute "NewBookmark"
-		completedBookmark.GetByTitle completedPDF, "Untitled"
-		completedBookmark.SetTitle "Title Page"
-		
 	'Telecommunications Contractor		
 		'Find and Replace Specific Words
 		SearchAndReplace "`SHORT~", shortTitle, tcWord
@@ -237,20 +228,6 @@
 		tpDocument.saveas miscPath + "\Test Plan.pdf", 17
 		tpDocument.Close
 		tpWord.Quit
-		
-	'Word Functions
-		Sub SearchAndReplace(find, replace, wordDoc)
-			If debug Then
-				log.WriteLine "Replacing " + find + " with " + replace
-			End If
-			Const wdReplaceAll = 2
-			Set selection = wordDoc.Selection
-			selection.Find.Text = find
-			selection.Find.Forward = True
-			selection.Find.MatchWholeWord = True
-			selection.Find.Replacement.Text = replace
-			selection.Find.Execute ,,,,,,,,,,wdReplaceAll
-		End Sub
 	
 	If debug Then
 		log.WriteLine "Finished Word"
@@ -381,7 +358,8 @@
 			End If
 		Next
 		allExcel.Quit
-	
+
+'Functions
 	'Excel Functions
 		Sub GetFileNames(targetFSO, targetPath)
 			Set TargetFolder = targetFSO.GetFolder(targetPath)
@@ -392,14 +370,41 @@
 				End If
 				fileCount = fileCount + 1
 			Next
+		End Sub		
+		
+	'Word Functions
+		Sub SearchAndReplace(find, replace, wordDoc)
+			If debug Then
+				log.WriteLine "Replacing " + find + " with " + replace
+			End If
+			Const wdReplaceAll = 2
+			Set selection = wordDoc.Selection
+			selection.Find.Text = find
+			selection.Find.Forward = True
+			selection.Find.MatchWholeWord = True
+			selection.Find.Replacement.Text = replace
+			selection.Find.Execute ,,,,,,,,,,wdReplaceAll
+		End Sub
+		
+	'PDF Functions
+		Sub AddBookmark(AVPageView, AdobeAPP, AdobeBookmark, pdfDoc, page, Title)
+			If debug Then
+				log.WriteLine "Adding bookmark: " + title
+			End If
+			AVPageView.GoTo page
+			AdobeAPP.MenuItemExecute "NewBookmark"
+			AdobeBookmark.GetByTitle pdfDoc, "Untitled"
+			AdobeBookmark.SetTitle Title
 		End Sub
 		
 	'Add Pages to PDF
+		'Set up bookmarks and Do Title Page Bookmark
+			Set completedAVDoc = completedPDF.OpenAVDoc(completedPath)
+			Set completedBookmark = CreateObject("AcroExch.PDBookmark")
+			Set pageView = completedAVDoc.GetAVPageView()
+			AddBookmark pageView, completedAPP, completedBookmark, completedPDF, 0, "Title Page"
 		'Add bookmark for Table of Contents
-		pageView.GoTo(1)
-		completedAPP.MenuItemExecute "NewBookmark"
-		completedBookmark.GetByTitle completedPDF, "Untitled"
-		completedBookmark.SetTitle "Table of Contents"
+		AddBookmark pageView, completedAPP, completedBookmark, completedPDF, 1, "Table of Contents"
 		'Table of Contents
 			If debug Then
 				log.WriteLine("ADDING TABLE OF CONTENTS TO PDF")
@@ -407,10 +412,7 @@
 			tempPDF.Open miscPath + "\Table of Contents.pdf"
 			completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
 			'Add ToC bookmark
-				completedAVDoc.GetAVPageView().GoTo 2
-				completedAPP.MenuItemExecute "NewBookmark"
-				completedBookmark.GetByTitle completedPDF, "Untitled"
-				completedBookmark.SetTitle "Material and Product Listing"
+				AddBookmark pageView, completedAPP, completedBookmark, completedPDF, 2, "Material and Product Listing"
 			currentPage = currentPage + tempPDF.GetNumPages() + 1
 			tempPDF.Close
 		'Telecommunications Contractor
@@ -420,15 +422,9 @@
 			tempPDF.Open miscPath + "\Telecommunications Contractor.pdf"
 			completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
 			'Add Telecommunications Contractor Section bookmark
-				completedAVDoc.GetAVPageView().GoTo currentPage	
-				completedAPP.MenuItemExecute "NewBookmark"
-				completedBookmark.GetByTitle completedPDF, "Untitled"
-				completedBookmark.SetTitle "Telecommunications Contractor, Section 1"
+				AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage, "Telecommunications Contractor, Section 1"
 			'Add Telecommunications Contractor Item bookmark
-				completedAVDoc.GetAVPageView().GoTo currentPage + 1
-				completedAPP.MenuItemExecute "NewBookmark"
-				completedBookmark.GetByTitle completedPDF, "Untitled"
-				completedBookmark.SetTitle "Telecommunications Contractor, Item #1"
+				AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage + 1, "Telecommunications Contractor, Item #1"
 			currentPage = currentPage + tempPDF.GetNumPages() + 1
 			tempPDF.Close
 		'Key Personnel
@@ -438,15 +434,9 @@
 			tempPDF.Open miscPath + "\Key Personnel List.pdf"
 			completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
 			'Add Key Personnel Section bookmark	
-				completedAVDoc.GetAVPageView().GoTo currentPage
-				completedAPP.MenuItemExecute "NewBookmark"
-				completedBookmark.GetByTitle completedPDF, "Untitled"
-				completedBookmark.SetTitle "Key Personnel, Section 2"
+				AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage, "Key Personnel, Section 2"
 			'Add Key Personnel Item bookmark
-				completedAVDoc.GetAVPageView().GoTo currentPage + 1
-				completedAPP.MenuItemExecute "NewBookmark"
-				completedBookmark.GetByTitle completedPDF, "Untitled"
-				completedBookmark.SetTitle "Key Personnel, Item #2"
+				AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage + 1, "Key Personnel, Item #2"
 			currentPage = currentPage + tempPDF.GetNumPages()
 			tempPDF.Close
 			GetFileNames certFSO, certPath
@@ -456,10 +446,7 @@
 					tempPDF.Open targetfile
 					completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
 					'Add Certificate Item bookmark
-						completedAVDoc.GetAVPageView().GoTo currentPage + 1
-						completedAPP.MenuItemExecute "NewBookmark"
-						completedBookmark.GetByTitle completedPDF, "Untitled"
-						completedBookmark.SetTitle splitPath(1) + " Certificate"
+						AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage + 1, splitPath(1) + " Certificate"
 					currentPage = currentPage + tempPDF.GetNumPages()
 					tempPDF.Close
 				End If
@@ -470,10 +457,7 @@
 				log.WriteLine("ADDING MMQ TO PDF")
 			End If
 			'Add Minimum Manufacturer Qualifications bookmark	
-				completedAVDoc.GetAVPageView().GoTo currentPage
-				completedAPP.MenuItemExecute "NewBookmark"
-				completedBookmark.GetByTitle completedPDF, "Untitled"
-				completedBookmark.SetTitle "Minimum Manufacturer Qualifications, Section 3"
+				AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage, "Minimum Manufacturer Qualifications, Section 3"
 			GetFileNames certFSO, certPath
 			For Each targetfile In files
 				splitPath = Split(targetfile.name, " ")
@@ -481,10 +465,7 @@
 					tempPDF.Open targetfile
 					completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
 					'Add Manufacturer Letter Item bookmark	
-					completedAVDoc.GetAVPageView().GoTo currentPage + 1
-					completedAPP.MenuItemExecute "NewBookmark"
-					completedBookmark.GetByTitle completedPDF, "Untitled"
-					completedBookmark.SetTitle LEFT(splitPath(1), (LEN(splitPath(1))-4)) + " " + splitPath(0)
+					AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage + 1, LEFT(splitPath(1), (LEN(splitPath(1))-4)) + " " + splitPath(0)
 					currentPage = currentPage + tempPDF.GetNumPages()
 					tempPDF.Close
 				End If
@@ -501,15 +482,9 @@
 					tempPDF.Open targetfile
 					completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
 					'Add Test Plan section bookmark		
-						completedAVDoc.GetAVPageView().GoTo currentPage
-						completedAPP.MenuItemExecute "NewBookmark"
-						completedBookmark.GetByTitle completedPDF, "Untitled"
-						completedBookmark.SetTitle "Test Plan, Section 4"
-					'Add Test Plan item bookmark	
-						completedAVDoc.GetAVPageView().GoTo currentPage + 1
-						completedAPP.MenuItemExecute "NewBookmark"
-						completedBookmark.GetByTitle completedPDF, "Untitled"
-						completedBookmark.SetTitle "Test Plan, Item #4"
+						AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage, "Test Plan, Section 4"
+					'Add Test Plan item bookmark		
+						AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage + 1, "Test Plan,	 #4"
 					currentPage = currentPage + tempPDF.GetNumPages() + 1
 					tempPDF.Close
 				End If
@@ -519,10 +494,7 @@
 				log.WriteLine("ADDING PRODUCTS TO PDF")
 			End If
 			'Add Products section bookmark		
-				completedAVDoc.GetAVPageView().GoTo currentPage
-				completedAPP.MenuItemExecute "NewBookmark"
-				completedBookmark.GetByTitle completedPDF, "Untitled"
-				completedBookmark.SetTitle "Product Data, Section 5"
+				AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage, "Product Data, Section 5"
 			GetFileNames ccFSO, ccPath
 			itemNumber = 5
 			For Each targetfile In files
@@ -530,25 +502,18 @@
 				tempPDF.Open targetfile
 				completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
 				'Add Products section bookmark		
-					completedAVDoc.GetAVPageView().GoTo currentPage + 1
-					completedAPP.MenuItemExecute "NewBookmark"
-					completedBookmark.GetByTitle completedPDF, "Untitled"
-					completedBookmark.SetTitle splitPath(2) + ", Item #" + CStr(itemNumber)
+					AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage + 1, splitPath(2) + ", Item #" + CStr(itemNumber)
 				currentPage = currentPage + tempPDF.GetNumPages()
 				tempPDF.Close
 				itemNumber = itemNumber + 1
 			Next
 		'Shop Drawings Bookmark
 			If shopDrawings = 6 Then
-				completedAVDoc.GetAVPageView().GoTo currentPage + 1
-				completedAPP.MenuItemExecute "NewBookmark"
-				completedBookmark.GetByTitle completedPDF, "Untitled"
-				completedBookmark.SetTitle "Shop Drawings, Section 6"
+				AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage + 1, "Shop Drawings, Section 6"
 			End If
 			
 'Close completed PDF app
 	completedPDF.Save 0, completedPath
-	completedPDF.CLOSE
 	completedAPP.Exit
 'Done
 If debug Then
