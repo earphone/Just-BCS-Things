@@ -79,6 +79,8 @@ Useful:
 	batch bookmark:	https://forums.adobe.com/thread/613362
 		Possilby Show pdf and use send keys
 	PDBookmark:	http://forums.planetpdf.com/cant-title-bookmarks_topic958.html
+	flattenPages:	http://help.adobe.com/livedocs/acrobat_sdk/11/Acrobat11_HTMLHelp/wwhelp/wwhimpl/common/html/wwhelp.htm?context=Acrobat11_HTMLHelp&file=JS_API_AcroJS.89.472.html
+	jso docs:	http://help.adobe.com/livedocs/acrobat_sdk/11/Acrobat11_HTMLHelp/wwhelp/wwhimpl/js/html/wwhelp.htm?href=JS_API_AcroJS.89.1.html#1515776&accessible=true
 ==============================================================================	
 Log:
 	***09/24/2015***
