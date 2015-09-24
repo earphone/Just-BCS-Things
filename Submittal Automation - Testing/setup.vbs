@@ -1,3 +1,7 @@
+'Script for Submittal Automation for BCS
+'For most updated version visit:	https://github.com/earphone/Just-BCS-Things
+'Last updated:		09/24/2015
+
 'Debugging
 	Dim debug
 	debug = True

@@ -1,5 +1,6 @@
 Basic Setup for Automating Job Submittals
 For most updated version visit:	https://github.com/earphone/Just-BCS-Things
+Last Updated:	09/24/2015
 ===============================================================================
 To Run:
 

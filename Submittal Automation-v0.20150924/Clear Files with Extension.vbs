@@ -1,3 +1,7 @@
+'Basic script to clear all files of a user input type
+'For most updated version visit:	https://github.com/earphone/Just-BCS-Things
+'Last updated 09/24/2015
+
 'Debugging
 	Dim debug
 	debug = False

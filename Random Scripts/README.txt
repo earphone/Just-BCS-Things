@@ -13,6 +13,10 @@ Scripts:
 		Double click script to run
 		Choose PDF file
 		Says "Finished" when done
+	FlattenPDf
+		Asks user to choose a PDF file to flatten
+		If file exists then asks user if it's ok to continue
+		Flattens and saves as new file within same folder with "_FLATTENED" added to the title
 
 Log:
 	***09/21/2015***

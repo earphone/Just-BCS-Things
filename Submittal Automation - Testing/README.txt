@@ -1,5 +1,6 @@
 Basic Setup for Automating Job Submittals
 For most updated version visit:	https://github.com/earphone/Just-BCS-Things
+Last Updated:	09/24/2015
 ===============================================================================
 To Run:
 
@@ -80,6 +81,10 @@ Useful:
 	PDBookmark:	http://forums.planetpdf.com/cant-title-bookmarks_topic958.html
 ==============================================================================	
 Log:
+	***09/24/2015***
+	Changed some formatting and made it ready to go
+	***09/23/2015***
+	Changed bookmarks to be implemented using a Sub that is called
 	***09/21/2015***
 	Changed how bookmarks are implemented (not using sendKeys anymore)
 	***09/18/2015***

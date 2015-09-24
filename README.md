@@ -5,7 +5,7 @@
 #### [Random Scripts] (https://github.com/earphone/Just-BCS-Things)
 
 * [AddBookmark2PDF](https://github.com/earphone/Just-BCS-Things/tree/master/Random%20Scripts/AddBookmark2PDF)
-   This is a small script to help me by automating bookmark additions to a PDF.
+   This is a small script to help me by automating bookmark additions to a PDF
   * Fill in 1st column of the excel with page numbers
   * Fill in 2nd column of the excel with bookmark titles associated with page number
   * Double click vbs script to run it
@@ -17,6 +17,13 @@
 --* Double click the vbs script to run it
 --* Enter just the extension of the files that you would like to deletes
 --* Shows all files that were deleted
+
+* [FlattenPDF](https://github.com/earphone/Just-BCS-Things/blob/master/Random%20Scripts/FlattenPDF.vbs)
+---This is an even smaller script that creates a new file thats exactly the same as the old one except with everything flattened to become uneditable
+--* Double click the vbs script to run it
+--* Choose the original file to be flattened
+--* Asks user to confirm flattening
+--* New flattened file is saved with "_FLATTENED" added to the end of the file name within the same folder
 	
 #### [Submittal Automation - Testing] (https://github.com/earphone/Just-BCS-Things/tree/master/Submittal%20Automation%20-%20Testing)
 ###### Submittal Automation Just for Testing Purposes
@@ -24,6 +31,6 @@
 * setup.vbs is the most current version of setup used in the release version of the submittal automation
 * contains ConvertWordToPDF.vbs which was used as a reference
 
-#### [Submittal Automation-vX.XXXXXXXX] (https://github.com/earphone/Just-BCS-Things/tree/master/Submittal%20Automation-v0.20150921)
-###### This is the release version of submittal automation.
-###### Read the README.txt file within it to learn how to use it correctly.
+#### [Submittal Automation-vX.XXXXXXXX] (https://github.com/earphone/Just-BCS-Things/tree/master/Submittal%20Automation-v0.20150924)
+###### This is the release version of submittal automation
+###### Read the README.txt file within it to learn how to use it correctly
