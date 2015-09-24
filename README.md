@@ -13,17 +13,17 @@
   * Says "Finished" when done
 
 * [Clear Files with Extension](https://github.com/earphone/Just-BCS-Things/blob/master/Random%20Scripts/Clear%20Files%20with%20Extension.vbs)
----This is an even smaller script that deletes files in the same folder as the script of a certain extension that a user inputs.
---* Double click the vbs script to run it
---* Enter just the extension of the files that you would like to deletes
---* Shows all files that were deleted
+   This is an even smaller script that deletes files in the same folder as the script of a certain extension that a user inputs.
+  * Double click the vbs script to run it
+  * Enter just the extension of the files that you would like to deletes
+  * Shows all files that were deleted
 
 * [FlattenPDF](https://github.com/earphone/Just-BCS-Things/blob/master/Random%20Scripts/FlattenPDF.vbs)
----This is an even smaller script that creates a new file thats exactly the same as the old one except with everything flattened to become uneditable
---* Double click the vbs script to run it
---* Choose the original file to be flattened
---* Asks user to confirm flattening
---* New flattened file is saved with "_FLATTENED" added to the end of the file name within the same folder
+  This is an even smaller script that creates a new file thats exactly the same as the old one except with everything flattened to become uneditable
+  * Double click the vbs script to run it
+  * Choose the original file to be flattened
+  * Asks user to confirm flattening
+  * New flattened file is saved with "_FLATTENED" added to the end of the file name within the same folder
 	
 #### [Submittal Automation - Testing] (https://github.com/earphone/Just-BCS-Things/tree/master/Submittal%20Automation%20-%20Testing)
 ###### Submittal Automation Just for Testing Purposes
