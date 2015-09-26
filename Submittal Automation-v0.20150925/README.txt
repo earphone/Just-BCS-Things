@@ -1,6 +1,6 @@
 Basic Setup for Automating Job Submittals
 For most updated version visit:	https://github.com/earphone/Just-BCS-Things
-Last Updated:	09/24/2015
+Last Updated:	09/25/2015
 ===============================================================================
 To Run:
 
@@ -19,10 +19,8 @@ To Run:
     G:	Proofread and Edit Submittal
     		1:	Remove Unneeded Minimum manufacturer qualification letters
 		2:	Check if section title pages are in the right places
-		3:	Add in item number comment in top right according to 
-				"Table of Contents"
-		4:	Circle/bubble product number
-		5:	Check if bookmarks are to the correct places
+		3:	Circle/bubble product number
+		4:	Check if bookmarks are to the correct places
 ===============================================================================
 Heirarcheral Standard:
 

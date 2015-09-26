@@ -19,10 +19,8 @@ To Run:
     G:	Proofread and Edit Submittal
     	1:	Remove Unneeded Minimum manufacturer qualification letters
 		2:	Check if section title pages are in the right places
-		3:	Add in item number comment in top right according to 
-				"Table of Contents"
-		4:	Circle/bubble product number
-		5:	Check if bookmarks are to the correct pages
+		3:	Circle/bubble product number
+		4:	Check if bookmarks are to the correct pages
 ===============================================================================
 Heirarcheral Standard:
 
@@ -83,6 +81,8 @@ Useful:
 	jso docs:	http://help.adobe.com/livedocs/acrobat_sdk/11/Acrobat11_HTMLHelp/wwhelp/wwhimpl/js/html/wwhelp.htm?href=JS_API_AcroJS.89.1.html#1515776&accessible=true
 ==============================================================================	
 Log:
+	***09/25/2015***
+	Added in "Item #" annotations and addItem sub
 	***09/24/2015***
 	Changed some formatting and made it ready to go
 	***09/23/2015***

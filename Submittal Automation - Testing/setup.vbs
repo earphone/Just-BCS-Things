@@ -1,6 +1,6 @@
 'Script for Submittal Automation for BCS
 'For most updated version visit:	https://github.com/earphone/Just-BCS-Things
-'Last updated:		09/24/2015
+'Last updated:		09/25/2015
 
 'Debugging
 	Dim debug
@@ -11,6 +11,7 @@
 	Dim itemNumber
 	Dim files, fileCount
 	Dim currentPage
+	Dim popupRect(3)
 'Completed PDF Setup
 	Dim completedAPP, completedPDF
 	Set completedAPP = CreateObject("AcroExch.app")
@@ -102,7 +103,7 @@
 	shopDrawings=MsgBox("Include Shop Drawings?", 4, "Shop Drawings")
 
 'Get current filepath
-	Dim WshShell, curDir
+	Dim WshShell, curDir, jso
 	Set WshShell = CreateObject("WScript.Shell")
 	curDir = WshShell.CurrentDirectory
 		
@@ -390,23 +391,44 @@
 			selection.Find.Execute ,,,,,,,,,,wdReplaceAll
 		End Sub
 		
-	'PDF Functions
-		Sub AddBookmark(AVPageView, AdobeAPP, AdobeBookmark, pdfDoc, page, Title)
-			If debug Then
-				log.WriteLine "Adding bookmark: " + title
-			End If
-			AVPageView.GoTo page
-			AdobeAPP.MenuItemExecute "NewBookmark"
-			AdobeBookmark.GetByTitle pdfDoc, "Untitled"
-			AdobeBookmark.SetTitle Title
-		End Sub
-		
 	'Add Pages to PDF
 		'Set up bookmarks and Do Title Page Bookmark
+			Set jso = completedPDF.GetJSObject
 			Set completedAVDoc = completedPDF.OpenAVDoc(completedPath)
 			Set completedBookmark = CreateObject("AcroExch.PDBookmark")
-			Set pageView = completedAVDoc.GetAVPageView()
-			AddBookmark pageView, completedAPP, completedBookmark, completedPDF, 0, "Title Page"
+			Set pageView = completedAVDoc.GetAVPageView()	
+			
+		'PDF Functions
+			Sub AddBookmark(AVPageView, AdobeAPP, AdobeBookmark, pdfDoc, page, Title)
+				If debug Then
+					log.WriteLine "Adding bookmark: " + title
+				End If
+				AVPageView.GoTo page
+				AdobeAPP.MenuItemExecute "NewBookmark"
+				AdobeBookmark.GetByTitle pdfDoc, "Untitled"
+				AdobeBookmark.SetTitle Title
+			End Sub
+			
+			Sub addItem(page, words)
+				Set annot = jso.addAnnot
+				Set props = annot.getProps	
+				Set thisPage = completedPDF.AcquirePage(page)
+				Set pageRect = thisPage.GetSize
+				popupRect(0) = 0
+				popupRect(0) = pageRect.X-80
+				popupRect(1) = pageRect.Y-37
+				popupRect(2) = pageRect.X-25
+				popupRect(3) = pageRect.Y-20
+				props.type = "FreeText"
+				props.page = page
+				props.contents = words
+				props.strokeColor = jso.Color.red
+				props.rect = popupRect
+				props.fillColor = jso.Color.white
+				annot.setProps props
+			End Sub
+		
+		AddBookmark pageView, completedAPP, completedBookmark, completedPDF, 0, "Title Page"
 		'Add bookmark for Table of Contents
 		AddBookmark pageView, completedAPP, completedBookmark, completedPDF, 1, "Table of Contents"
 		'Table of Contents
@@ -429,6 +451,8 @@
 				AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage, "Telecommunications Contractor, Section 1"
 			'Add Telecommunications Contractor Item bookmark
 				AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage + 1, "Telecommunications Contractor, Item #1"
+				addItem currentPage + 1, "Item #1"
+				'jso.addAnnot()
 			currentPage = currentPage + tempPDF.GetNumPages() + 1
 			tempPDF.Close
 		'Key Personnel
@@ -441,6 +465,7 @@
 				AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage, "Key Personnel, Section 2"
 			'Add Key Personnel Item bookmark
 				AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage + 1, "Key Personnel, Item #2"
+				addItem currentPage + 1, "Item #2"
 			currentPage = currentPage + tempPDF.GetNumPages()
 			tempPDF.Close
 			GetFileNames certFSO, certPath
@@ -488,7 +513,8 @@
 					'Add Test Plan section bookmark		
 						AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage, "Test Plan, Section 4"
 					'Add Test Plan item bookmark		
-						AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage + 1, "Test Plan,	 #4"
+						AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage + 1, "Test Plan, Item #4"
+						addItem currentPage + 1, "Item #4"
 					currentPage = currentPage + tempPDF.GetNumPages() + 1
 					tempPDF.Close
 				End If
@@ -507,6 +533,7 @@
 				completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
 				'Add Products section bookmark		
 					AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage + 1, splitPath(2) + ", Item #" + CStr(itemNumber)
+					addItem currentPage + 1, "Item #" + CStr(itemNumber)
 				currentPage = currentPage + tempPDF.GetNumPages()
 				tempPDF.Close
 				itemNumber = itemNumber + 1
