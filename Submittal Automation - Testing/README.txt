@@ -1,6 +1,6 @@
 Basic Setup for Automating Job Submittals
 For most updated version visit:	https://github.com/earphone/Just-BCS-Things
-Last Updated:	09/24/2015
+Last Updated:	09/25/2015
 ===============================================================================
 To Run:
 
@@ -17,7 +17,7 @@ To Run:
     E:	Will say "Finished" when completed
     F:	New Submittal file will be found in "Completed Submittals" Folder
     G:	Proofread and Edit Submittal
-    	1:	Remove Unneeded Minimum manufacturer qualification letters
+    		1:	Remove Unneeded Minimum manufacturer qualification letters
 		2:	Check if section title pages are in the right places
 		3:	Circle/bubble product number
 		4:	Check if bookmarks are to the correct pages
