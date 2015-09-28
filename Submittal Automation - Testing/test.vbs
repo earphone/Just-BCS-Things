@@ -25,7 +25,7 @@
 
 'Reminder to close all excel, word, and PDF documents
 	warningString = "Please CLOSE All Excel, Word, and PDF documents before continuing." + vbNewLine + "Also, make sure that all CAT-CUTS are named correctly and that all MISC DOCUMENTS are edited for this job." + vbNewLine + "Failure to do so WILL cause unexpected problems." + vbNewLine + "Hit CANCEL to exit this script!"
-	warningMsg = MsgBox(warningString,VBOkCancel)
+	warningMsg = MsgBox(warningString,VBOkCancel,48)
 	If warningMsg = 2 Then
 		WScript.Quit
 	End If

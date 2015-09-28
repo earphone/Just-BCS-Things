@@ -2,9 +2,11 @@
 	Dim debug
 	debug = False
 	
+Do
 'Global Variables
-	Dim deletedFiles, count
+	Dim deletedFiles, count, resumeLoop
 	count = 0
+	resumeLoop = 0
 	
 'Get current filepath
 	Dim WshShell, curDir
@@ -35,7 +37,9 @@
 	Next
 	
 	If count = 0 Then
-		MsgBox "There were NO files to delete"
+		resumeLoop = MsgBox ("There were NO files to delete" + vbNewLine + vbNewLine + "Try Again?", 4)
 	Else
-		MsgBox deletedFiles
+		resumeLoop = MsgBox (deletedFiles + vbNewLine + vbNewLine + "Run Again?", 4)
 	End If
+	
+	Loop While resumeLoop = 6

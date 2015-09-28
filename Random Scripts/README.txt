@@ -19,6 +19,8 @@ Scripts:
 		Flattens and saves as new file within same folder with "_FLATTENED" added to the title
 
 Log:
+	***09/28/2015***
+	Added in the option to rerun "Clear Files with Extension" and "FlattenPDF"
 	***09/21/2015***
 	Created "AddBookmark2PDF" folder with excel and script files
 	***09/14/2015***
