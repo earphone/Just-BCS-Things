@@ -12,7 +12,7 @@ On Error Resume Next
 'Global Variables
 	Dim rowNumber
 	Dim itemNumber
-	Dim files, fileCount
+	Dim files, fileCount, cancel
 	Dim currentPage
 	Dim popupRect(3)
 'Completed PDF Setup
@@ -455,6 +455,22 @@ On Error Resume Next
 				annot.setProps props
 				CheckError("Adding Item")
 			End Sub
+			
+			'Check Error Function
+			Sub CheckError(errorString)
+				If Err.Number > 0 Then
+					If debug Then
+						log.WriteLine "ERROR OCCURRED when " + errorString
+						log.WriteLine "    Err.Number = " + Err.Number
+						log.WriteLine "    Err.Description = " + Err.Description
+						log.WriteLine "    Err.Line = " + Err.Line
+						log.WriteLine " Column = " + Err.Column
+						log.WriteLine "    Err.Source = " + Err.Source
+					End If
+					MsgBox ("ERROR OCCURRED when " + errorString + vbNewLine + "QUITTING...")
+					WScript.Quit
+				End If
+			End Sub
 		
 		AddBookmark pageView, completedAPP, completedBookmark, completedPDF, 0, "Title Page"
 		'Add bookmark for Table of Contents
@@ -584,17 +600,3 @@ If shopDrawings = 6 Then
 Else
 	WScript.Echo "Finished" + vbNewLine + "Please double check your finished file in the following path:" + vbNewLine + completedPath
 End If
-
-'Check Error Function
-Sub CheckError(errorString)
-	If Err.Number > 0 Then
-		log.WriteLine("ERROR OCCURRED when " + errorString)
-		log.WriteLine("    Err.Number = " + Err.Number)
-		log.WriteLine("    Err.Description = " + Err.Description)
-		log.WriteLine("    Err.Line = " + Err.Line + " Column = " + Err.Column)
-		log.WriteLine("    Err.Source = " + Err.Source)
-		log.Close
-		MsgBox "ERROR OCCURRED when " + errorString + vbNewLine + "QUITTING..."
-		WScript.Quit
-	End If
-End Sub
