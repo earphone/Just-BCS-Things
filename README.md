@@ -31,6 +31,6 @@
 * setup.vbs is the most current version of setup used in the release version of the submittal automation
 * contains ConvertWordToPDF.vbs which was used as a reference
 
-#### [Submittal Automation-vX.XXXXXXXX] (https://github.com/earphone/Just-BCS-Things/tree/master/Submittal%20Automation-v0.20150928)
+#### [Submittal Automation-vX.XXXXXXXX] (https://github.com/earphone/Just-BCS-Things/tree/master/Submittal%20Automation-v0.20150929)
 ###### This is the release version of submittal automation
 ###### Read the README.txt file within it to learn how to use it correctly
