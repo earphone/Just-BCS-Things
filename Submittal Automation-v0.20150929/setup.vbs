@@ -1,6 +1,6 @@
 'Script for Submittal Automation for BCS
 'For most updated version visit:	https://github.com/earphone/Just-BCS-Things
-'Last updated:		09/25/2015
+'Last updated:		09/29/2015
 
 'Enable Error Handling
 On Error Resume Next
@@ -12,7 +12,7 @@ On Error Resume Next
 'Global Variables
 	Dim rowNumber
 	Dim itemNumber
-	Dim files, fileCount
+	Dim files, fileCount, cancel, somethingWentWrong
 	Dim currentPage
 	Dim popupRect(3)
 'Completed PDF Setup
@@ -123,25 +123,25 @@ On Error Resume Next
 	Dim ccFSO, ccPath
 	Set ccFSO = CreateObject("Scripting.FileSystemObject")
 	ccPath = curDir + "\Cat-Cuts"
-	CheckError("Getting Cat-Cut folder")
+	CheckError("Getting Cat-Cut folder [1]")
 
 	'Get Certificate folder
 	Dim certFSO, certPath
 	Set certFSO = CreateObject("Scripting.FileSystemObject")
 	certPath = curDir + "\Certificates"
-	CheckError("Getting Certificate Folder")
+	CheckError("Getting Certificate Folder [2]")
 
 	'Get Misc Document folder
 	Dim miscFSO, miscPath
 	Set miscFSO = CreateObject("Scripting.FileSystemObject")
 	miscPath = curDir + "\Misc Documents"
-	CheckError("Getting Misc Document Folder")
+	CheckError("Getting Misc Document Folder [3]")
 
 	'Get Completed Submittals folder
 	Dim completedFSO, completedPath
 	Set completedFSO = CreateObject("Scripting.FileSystemObject")
 	completedPath = curDir + "\Completed Submittals"
-	CheckError("Getting Completed Submittals Folder")
+	CheckError("Getting Completed Submittals Folder [4]")
 
 'Debug the Initializations
 	If debug Then
@@ -166,32 +166,34 @@ On Error Resume Next
 			log.WriteLine "Completed Folder exists."
 		End If
 		log.WriteLine ""
-		CheckError("Initializing")
+		CheckError("Initializing [5]")
 	End If
 	
 'Word Documents
 	'Setup Word for All documents
 	GetFileNames miscFSO, miscPath
 		For Each targetfile In files
-			splitPath = Split(targetfile.name, " ")
-			Select case splitPath(0)
-				case "Telecommunications"
-				'Setup Word for TC
-					Set tcWord = CreateObject("Word.Application")
-					tcWord.Visible = False
-					Set tcDocument = tcWord.Documents.Open(miscPath + "\" + targetfile.name)
-				case "Title"
-				'Setup Word for TS
-					Set tsWord = CreateObject("Word.Application")
-					tsWord.Visible = False
-					Set tsDocument = tsWord.Documents.Open(miscPath + "\" + targetfile.name)
-				case "Test"
-				'Setup Word for TP
-					Set tpWord = CreateObject("Word.Application")
-					tpWord.Visible = False
-					Set tpDocument = tpWord.Documents.Open(miscPath + "\" + targetfile.name)
-				CheckError("Setting up Initial " + splitPath(0))
-			End Select
+			If UCase(miscFSO.GetExtensionName(targetfile.name)) = "DOCX" Then
+				splitPath = Split(targetfile.name, " ")
+				Select case splitPath(0)
+					case "Telecommunications"
+					'Setup Word for TC
+						Set tcWord = CreateObject("Word.Application")
+						tcWord.Visible = False
+						Set tcDocument = tcWord.Documents.Open(miscPath + "\" + targetfile.name)
+					case "Title"
+					'Setup Word for TS
+						Set tsWord = CreateObject("Word.Application")
+						tsWord.Visible = False
+						Set tsDocument = tsWord.Documents.Open(miscPath + "\" + targetfile.name)
+					case "Test"
+					'Setup Word for TP
+						Set tpWord = CreateObject("Word.Application")
+						tpWord.Visible = False
+						Set tpDocument = tpWord.Documents.Open(miscPath + "\" + targetfile.name)
+					CheckError("Setting up Initial " + splitPath(0) + " [6]")
+				End Select
+			End IF
 		Next
 	'Title Sheet
 		'Find and Replace Specific Words
@@ -206,14 +208,14 @@ On Error Resume Next
 		tsDocument.saveas miscPath + "\Title Sheet.pdf", 17
 		completedPath = completedPath + "\" + shortTitle + " Completed_" + singleDate + ".pdf"
 		tsDocument.saveas completedPath, 17	
-		CheckError("Saving CompletedPDF")	
+		CheckError("Saving CompletedPDF [7]")	
 		tsDocument.Close
 		tsWord.Quit
 		
 		'Remove unneeded pages based upon shop drawing choice
 'Open completed PDF doc and add in bookmarks for it
 		completedPDF.Open completedPath
-		CheckError("Opening completedPDF")
+		CheckError("Opening completedPDF [8]")
 		'If include shop drawings
 		If shopDrawings = 6 Then
 			completedPDF.DeletePages 1,1
@@ -231,7 +233,7 @@ On Error Resume Next
 		'Save, Print to PDF, and Quit Word TC
 		tcDocument.Save
 		tcDocument.saveas miscPath + "\Telecommunications Contractor.pdf", 17
-		CheckError("Saving Telecommunications Contractor")
+		CheckError("Saving Telecommunications Contractor [9]")
 		tcDocument.Close
 		tcWord.Quit
 		
@@ -243,7 +245,7 @@ On Error Resume Next
 		'Save, Print to PDF, and Quit Word TP
 		tpDocument.Save
 		tpDocument.saveas miscPath + "\Test Plan.pdf", 17
-		CheckError("Saving Test Plan PDF")
+		CheckError("Saving Test Plan PDF [10]")
 		tpDocument.Close
 		tpWord.Quit
 	
@@ -259,9 +261,9 @@ On Error Resume Next
 	'Table of Contents
 		'Setup Excel for ToC
 		Set tocWorkbook = allExcel.Workbooks.Open(miscPath + "\Table of Contents.xml")
-		CheckError("Getting tocWorkbook")
+		CheckError("Getting Table of Contents Workbook [11]")
 		Set tocWorksheet = tocWorkbook.Worksheets("Table 1")
-		CheckError("Getting tocWorksheet")
+		CheckError("Getting Table of Contents Worksheet [12]")
 
 		'Fill in ToC main info
 		tocWorksheet.Cells(1,1) = longTitle
@@ -272,78 +274,82 @@ On Error Resume Next
 		'Fill in spec ref for Misc Documents
 		GetFileNames miscFSO, miscPath
 		For Each targetfile In files
-			removeExt = Left(targetfile.name, InStrRev(targetfile.name,".") - 1)
-			splitPath = Split(removeExt,"_")
-			If splitPath(0) = "Telecommunications Contractor" Then
-				If ubound(splitPath) > 0 Then
-					tocWorksheet.Cells(8,4) = splitPath(1)
+			If UCase(miscFSO.GetExtensionName(targetfile.name)) <> "PDF" Then
+				removeExt = Left(targetfile.name, InStrRev(targetfile.name,".") - 1)
+				splitPath = Split(removeExt,"_")
+				If splitPath(0) = "Telecommunications Contractor" Then
+					If ubound(splitPath) > 0 Then
+						tocWorksheet.Cells(8,4) = splitPath(1)
+					End If
 				End If
-			End If
-			If splitPath(0) = "Key Personnel List" Then
-				If ubound(splitPath) > 0 Then
-					tocWorksheet.Cells(9,4) = splitPath(1)
+				If splitPath(0) = "Key Personnel List" Then
+					If ubound(splitPath) > 0 Then
+						tocWorksheet.Cells(9,4) = splitPath(1)
+					End If
 				End If
-			End If
-			If splitPath(0) = "Minimum Manufacturer Qualifications" Then
-				If ubound(splitPath) > 0 Then
-					tocWorksheet.Cells(10,4) = splitPath(1)
+				If splitPath(0) = "Minimum Manufacturer Qualifications" Then
+					If ubound(splitPath) > 0 Then
+						tocWorksheet.Cells(10,4) = splitPath(1)
+					End If
 				End If
-			End If
-			If splitPath(0) = "Test Plan" Then
-				If ubound(splitPath) > 0 Then
-					tocWorksheet.Cells(11,4) = splitPath(1)
+				If splitPath(0) = "Test Plan" Then
+					If ubound(splitPath) > 0 Then
+						tocWorksheet.Cells(11,4) = splitPath(1)
+					End If
 				End If
+				CheckError("Setting up Table of Contents information for " + targetfile.name + " [13]")
 			End If
-			CheckError("Setting up ToC information for " + targetfile.name)
 		Next
 		
 		'Fill in Product Info
 		GetFileNames ccFSO, ccPath
 		For Each targetfile In files
-			removeExt = Left(targetfile.name, InStrRev(targetfile.name,".") - 1)
-			splitPath = Split(removeExt,"_")
-			If debug Then
-				log.WriteLine "Size of " + removeExt + " " + CStr(ubound(splitPath))
-			End If
-			'Item Number
-			tocWorksheet.Cells(rowNumber,1) = itemNumber
-			'Submittal Type
-			tocWorksheet.Cells(rowNumber,2) = "Product"
-			'Spec Ref
-			If ubound(splitPath) = 4 Then
-				tocWorksheet.Cells(rowNumber,4) = splitPath(4)
-			End If
-			'Description
-			tocWorksheet.Cells(rowNumber,6) = splitPath(2)
-			If debug Then
-				log.WriteLine "Row Size of *" + CStr(tocWorksheet.Cells(rowNumber,6))+ "* is *" + CStr(Len(tocWorksheet.Cells(rowNumber,6))) + "*"
-			End If
-			If Len(tocWorksheet.Cells(rowNumber,6)) > 45 Then
-				If Len(tocWorksheet.Cells(rowNumber,6)) > 90 Then
-					tocWorksheet.Cells(rowNumber,6).EntireRow.RowHeight = 30
-				Else
-					tocWorksheet.Cells(rowNumber,6).EntireRow.RowHeight = 20
+			If UCase(ccFSO.GetExtensionName(targetfile.name)) = "PDF" Then
+				removeExt = Left(targetfile.name, InStrRev(targetfile.name,".") - 1)
+				splitPath = Split(removeExt,"_")
+				If debug Then
+					log.WriteLine "Size of " + removeExt + " " + CStr(ubound(splitPath))
 				End If
-			End If
-			'Model/type/color
-			tocWorksheet.Cells(rowNumber,8) = splitPath(3)
-			If debug Then
-				log.WriteLine "Row Size of *" + CStr(tocWorksheet.Cells(rowNumber,8))+ "* is *" + CStr(Len(tocWorksheet.Cells(rowNumber,8))) + "*"
-			End If
-			If Len(tocWorksheet.Cells(rowNumber,8)) > 45 Then
-				If Len(tocWorksheet.Cells(rowNumber,8)) > 90 Then
-					tocWorksheet.Cells(rowNumber,8).EntireRow.RowHeight = 30
-				Else
-					tocWorksheet.Cells(rowNumber,8).EntireRow.RowHeight = 20
+				'Item Number
+				tocWorksheet.Cells(rowNumber,1) = itemNumber
+				'Submittal Type
+				tocWorksheet.Cells(rowNumber,2) = "Product"
+				'Spec Ref
+				If ubound(splitPath) = 4 Then
+					tocWorksheet.Cells(rowNumber,4) = splitPath(4)
 				End If
+				'Description
+				tocWorksheet.Cells(rowNumber,6) = splitPath(2)
+				If debug Then
+					log.WriteLine "Row Size of *" + CStr(tocWorksheet.Cells(rowNumber,6))+ "* is *" + CStr(Len(tocWorksheet.Cells(rowNumber,6))) + "*"
+				End If
+				If Len(tocWorksheet.Cells(rowNumber,6)) > 45 Then
+					If Len(tocWorksheet.Cells(rowNumber,6)) > 90 Then
+						tocWorksheet.Cells(rowNumber,6).EntireRow.RowHeight = 30
+					Else
+						tocWorksheet.Cells(rowNumber,6).EntireRow.RowHeight = 20
+					End If
+				End If
+				'Model/type/color
+				tocWorksheet.Cells(rowNumber,8) = splitPath(3)
+				If debug Then
+					log.WriteLine "Row Size of *" + CStr(tocWorksheet.Cells(rowNumber,8))+ "* is *" + CStr(Len(tocWorksheet.Cells(rowNumber,8))) + "*"
+				End If
+				If Len(tocWorksheet.Cells(rowNumber,8)) > 45 Then
+					If Len(tocWorksheet.Cells(rowNumber,8)) > 90 Then
+						tocWorksheet.Cells(rowNumber,8).EntireRow.RowHeight = 30
+					Else
+						tocWorksheet.Cells(rowNumber,8).EntireRow.RowHeight = 20
+					End If
+				End If
+				'Part Number
+				tocWorksheet.Cells(rowNumber,10) = splitPath(1)
+				'Manufacturer
+				tocWorksheet.Cells(rowNumber,12) = splitPath(0)
+				rowNumber = rowNumber + 1
+				itemNumber = itemNumber + 1
+				CheckError("Setting Up Table of Contents information for " + targetfile.name + " [14]")
 			End If
-			'Part Number
-			tocWorksheet.Cells(rowNumber,10) = splitPath(1)
-			'Manufacturer
-			tocWorksheet.Cells(rowNumber,12) = splitPath(0)
-			rowNumber = rowNumber + 1
-			itemNumber = itemNumber + 1
-			CheckError("Setting Up ToC information for " + targetfile.name)
 		Next
 		
 		'Add in field for shop drawings if adding in
@@ -351,38 +357,40 @@ On Error Resume Next
 			tocWorksheet.Cells(rowNumber,1) = itemNumber
 			tocWorksheet.Cells(rowNumber,2) = "Document"
 			tocWorksheet.Cells(rowNumber,6) = "Shop Drawings"
-			CheckError("Adding in Shop Drawings Fields")
+			CheckError("Adding in Shop Drawings Fields [15]")
 		End If
 		
 		'Save, Print to PDF, and Quit Excel ToC
 		allExcel.ActiveWorkbook.Save
 		tocWorkbook.ActiveSheet.ExportAsFixedFormat EXCEL_PDF, miscPath & "\Table of Contents.pdf", EXCEL_QualityStandard, TRUE,FALSE,,,False
 		allExcel.ActiveWorkbook.Close
-		CheckError("Saving Table of Contents PDF")
+		CheckError("Saving Table of Contents PDF [16]")
 		
-	'Key Personnel List
+	'Key Personnel List 
 		'Setup Excel for KPL	GetFileNames miscFSO, miscPath
 		Dim kplWorkbook
 		GetFileNames miscFSO, miscPath
 		For Each targetfile In files
-			splitPath = Split(targetfile.name, " ")
-			If splitPath(0) = "Key" Then
-				Set kplWorkbook = allExcel.Workbooks.Open(miscPath + "\" + targetfile.name)
-				CheckError("Getting KPLWorkbook")
-				Set kplWorksheet =  kplWorkbook.Worksheets("Sheet1")
-				CheckError("Getting KPLWorksheet")
-				If debug Then
-					log.WriteLine "		Key Personnel List file found"
+			If UCase(miscFSO.GetExtensionName(targetfile.name)) <> "PDF" Then
+				splitPath = Split(targetfile.name, " ")
+				If splitPath(0) = "Key" Then
+					Set kplWorkbook = allExcel.Workbooks.Open(miscPath + "\" + targetfile.name)
+					CheckError("Getting Key Personnel List Workbook [17]")
+					Set kplWorksheet =  kplWorkbook.Worksheets("Sheet1")
+					CheckError("Getting Key Personnel List Worksheet [18]")
+					If debug Then
+						log.WriteLine "		Key Personnel List file found"
+					End If
+					'Fill in KPL info
+					kplWorksheet.Cells(2,1) = longTitle
+					kplWorksheet.Cells(3,1) = address
+					
+					'Save, Print to PDF and Quit Excel KPL
+					allExcel.ActiveWorkbook.Save
+					kplWorkbook.ActiveSheet.ExportAsFixedFormat EXCEL_PDF, miscPath & "\Key Personnel List.pdf", EXCEL_QualityStandard, TRUE,FALSE,,,False
+					allExcel.ActiveWorkbook.Close
+					CheckError("Setting Up Excel for Key Personnel List [19]")
 				End If
-				'Fill in KPL info
-				kplWorksheet.Cells(2,1) = longTitle
-				kplWorksheet.Cells(3,1) = address
-				
-				'Save, Print to PDF and Quit Excel KPL
-				allExcel.ActiveWorkbook.Save
-				kplWorkbook.ActiveSheet.ExportAsFixedFormat EXCEL_PDF, miscPath & "\Key Personnel List.pdf", EXCEL_QualityStandard, TRUE,FALSE,,,False
-				allExcel.ActiveWorkbook.Close
-				CheckError("Setting Up Excel for KPL")
 			End If
 		Next
 		allExcel.Quit
@@ -397,9 +405,9 @@ On Error Resume Next
 					log.WriteLine "     " + targetfile.name
 				End If
 				fileCount = fileCount + 1
-				CheckError("Getting File Names")
+				CheckError("Getting File Names [20]")
 			Next
-			CheckError("Getting File Names")			
+			CheckError("Getting File Names [21]")			
 		End Sub		
 		
 	'Word Functions
@@ -414,7 +422,7 @@ On Error Resume Next
 			selection.Find.MatchWholeWord = True
 			selection.Find.Replacement.Text = replace
 			selection.Find.Execute ,,,,,,,,,,wdReplaceAll
-			CheckError("Searching and Replacing")
+			CheckError("Searching and Replacing [22]")
 		End Sub
 		
 	'Add Pages to PDF
@@ -433,7 +441,7 @@ On Error Resume Next
 				AdobeAPP.MenuItemExecute "NewBookmark"
 				AdobeBookmark.GetByTitle pdfDoc, "Untitled"
 				AdobeBookmark.SetTitle Title
-				CheckError("Adding Bookmark")
+				CheckError("Adding Bookmark [23]")
 			End Sub
 			
 			Sub addItem(page, words)
@@ -453,9 +461,20 @@ On Error Resume Next
 				props.rect = popupRect
 				props.fillColor = jso.Color.white
 				annot.setProps props
-				CheckError("Adding Item")
+				CheckError("Adding Item [24]")
 			End Sub
-		
+			
+			'Check Error Function
+			Sub CheckError(errorString)
+				If Err.Number > 0 Then
+					log.WriteLine "ERROR OCCURRED when  " + errorString
+					log.WriteLine "    Err.Source:      " + Err.Source
+					log.WriteLine "    Err.Description: " + Err.Description
+					WScript.Echo "ERROR OCCURRED when " & errorString & vbNewLine & vbNewLine & Err.Description & vbNewLine & vbNewLine & "QUITTING..."
+					WScript.Quit
+				End If
+			End Sub
+			
 		AddBookmark pageView, completedAPP, completedBookmark, completedPDF, 0, "Title Page"
 		'Add bookmark for Table of Contents
 		AddBookmark pageView, completedAPP, completedBookmark, completedPDF, 1, "Table of Contents"
@@ -498,14 +517,16 @@ On Error Resume Next
 			tempPDF.Close
 			GetFileNames certFSO, certPath
 			For Each targetfile In files
-				splitPath = Split(targetfile.name, " ")
-				If splitPath(0) = "cert" Then
-					tempPDF.Open targetfile
-					completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
-					'Add Certificate Item bookmark
-						AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage + 1, splitPath(1) + " Certificate"
-					currentPage = currentPage + tempPDF.GetNumPages()
-					tempPDF.Close
+				If UCase(miscFSO.GetExtensionName(targetfile.name)) = "PDF" Then
+					splitPath = Split(targetfile.name, " ")
+					If splitPath(0) = "cert" Then
+						tempPDF.Open targetfile
+						completedPDF.InsertPages currentPage, tempPDF, 0, tempPDF.GetNumPages(), 0
+						'Add Certificate Item bookmark
+							AddBookmark pageView, completedAPP, completedBookmark, completedPDF, currentPage + 1, splitPath(1) + " Certificate"
+						currentPage = currentPage + tempPDF.GetNumPages()
+						tempPDF.Close
+					End If
 				End If
 			Next
 			currentPage = currentPage + 1
@@ -584,17 +605,3 @@ If shopDrawings = 6 Then
 Else
 	WScript.Echo "Finished" + vbNewLine + "Please double check your finished file in the following path:" + vbNewLine + completedPath
 End If
-
-'Check Error Function
-Sub CheckError(errorString)
-	If Err.Number > 0 Then
-		log.WriteLine("ERROR OCCURRED when " + errorString)
-		log.WriteLine("    Err.Number = " + Err.Number)
-		log.WriteLine("    Err.Description = " + Err.Description)
-		log.WriteLine("    Err.Line = " + Err.Line + " Column = " + Err.Column)
-		log.WriteLine("    Err.Source = " + Err.Source)
-		log.Close
-		MsgBox "ERROR OCCURRED when " + errorString + vbNewLine + "QUITTING..."
-		WScript.Quit
-	End If
-End Sub

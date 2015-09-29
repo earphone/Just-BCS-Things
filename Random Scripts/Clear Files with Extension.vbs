@@ -55,13 +55,10 @@ Do
 'Check Error Function
 Sub CheckError(errorString)
 	If Err.Number > 0 Then
-		log.WriteLine("ERROR OCCURRED when " + errorString)
-		log.WriteLine("    Err.Number = " + Err.Number)
-		log.WriteLine("    Err.Description = " + Err.Description)
-		log.WriteLine("    Err.Line = " + Err.Line + " Column = " + Err.Column)
-		log.WriteLine("    Err.Source = " + Err.Source)
-		log.Close
-		MsgBox "ERROR OCCURRED when " + errorString + vbNewLine + "QUITTING..."
+		log.WriteLine "ERROR OCCURRED when  " + errorString
+		log.WriteLine "    Err.Source:      " + Err.Source
+		log.WriteLine "    Err.Description: " + Err.Description
+		WScript.Echo "ERROR OCCURRED when " & errorString & vbNewLine & vbNewLine & Err.Description & vbNewLine & vbNewLine & "QUITTING..."
 		WScript.Quit
 	End If
 End Sub

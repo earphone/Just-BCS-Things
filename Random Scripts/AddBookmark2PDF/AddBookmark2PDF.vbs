@@ -49,7 +49,9 @@
 	
 'Setup Excel
 	Set bookmarkWorkbook = excelFile.Workbooks.Open(curDir + "\AddBookmark2PDFExcel.xlsx")
+	CheckError("Opening Bookmark Workbook")
 	Set bookmarkWorksheet = bookmarkWorkbook.Worksheets("Bookmarks")
+	CheckError("Opening Bookmark Worksheet")
 
 'Find and create bookmarks
 	row = 2
@@ -63,11 +65,24 @@
 		chosenBookmark.GetByTitle chosenPDF, "Untitled"
 		chosenBookmark.SetTitle bookmarkWorksheet.Cells(row,2)
 		row = row + 1
+		CheckError("Setting bookmark for " + bookmarkWorksheet.Cells(row,2))
 	Loop Until bookmarkWorksheet.Cells(row,1) = ""
 	
 'Close Everything
 	chosenPDF.Save 0, sFileSelected
+	CheckError("Saving PDF")
 	chosenPDF.Close
 	excelFile.Quit
 	adobeAPP.Exit
 	wscript.echo "Finished"
+	
+'Check Error Function
+Sub CheckError(errorString)
+	If Err.Number > 0 Then
+		log.WriteLine "ERROR OCCURRED when  " + errorString
+		log.WriteLine "    Err.Source:      " + Err.Source
+		log.WriteLine "    Err.Description: " + Err.Description
+		WScript.Echo "ERROR OCCURRED when " & errorString & vbNewLine & vbNewLine & Err.Description & vbNewLine & vbNewLine & "QUITTING..."
+		WScript.Quit
+	End If
+End Sub

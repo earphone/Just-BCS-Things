@@ -1,6 +1,6 @@
 Basic Setup for Automating Job Submittals
 For most updated version visit:	https://github.com/earphone/Just-BCS-Things
-Last Updated:	09/28/2015
+Last Updated:	09/29/2015
 ===============================================================================
 To Run:
 
@@ -40,7 +40,7 @@ Heirarcheral Standard:
 ==============================================================================
 Troubleshooting if an error occurs:
 
-	Snip error and send log to brandon.higashi@bcshawaii.com
+	Send log to brandon.higashi@bcshawaii.com
 		Then close all word and excel.exe open in task manager
 ==============================================================================
 BUGS:
@@ -79,8 +79,12 @@ Useful:
 	PDBookmark:	http://forums.planetpdf.com/cant-title-bookmarks_topic958.html
 	flattenPages:	http://help.adobe.com/livedocs/acrobat_sdk/11/Acrobat11_HTMLHelp/wwhelp/wwhimpl/common/html/wwhelp.htm?context=Acrobat11_HTMLHelp&file=JS_API_AcroJS.89.472.html
 	jso docs:	http://help.adobe.com/livedocs/acrobat_sdk/11/Acrobat11_HTMLHelp/wwhelp/wwhimpl/js/html/wwhelp.htm?href=JS_API_AcroJS.89.1.html#1515776&accessible=true
+	error handling:	http://www.herongyang.com/VBScript/Error-Handling-On-Error-Resume-Next.html
 ==============================================================================	
 Log:
+	***09/29/2015***
+	Fixed Error Handling with CheckError Sub
+	Added in file extension checking for some spots
 	***09/28/2015***
 	Added in Error Handling
 	***09/25/2015***

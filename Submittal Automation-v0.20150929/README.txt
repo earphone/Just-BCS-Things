@@ -1,6 +1,6 @@
 Basic Setup for Automating Job Submittals
 For most updated version visit:	https://github.com/earphone/Just-BCS-Things
-Last Updated:	09/28/2015
+Last Updated:	09/29/2015
 ===============================================================================
 To Run:
 
@@ -40,10 +40,11 @@ Heirarcheral Standard:
 ==============================================================================
 Troubleshooting if an error occurs:
 
-	Snip error and send log to brandon.higashi@bcshawaii.com
+	Send log to brandon.higashi@bcshawaii.com
 		Then close all word and excel.exe open in task manager
 ==============================================================================
 Notes:
+	BLANK_MISC folder are unedited Misc Files
 	If Running again, Clear all PDF's from Misc Documents
 	"Clear Files with Extension" deletes files in the same folder
 		Gets user prompt for file extension

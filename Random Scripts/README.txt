@@ -19,6 +19,8 @@ Scripts:
 		Flattens and saves as new file within same folder with "_FLATTENED" added to the title
 
 Log:
+	***09/29/2015***
+	Fixed Error Handling with Check Error Sub
 	***09/28/2015***
 	Added in the option to rerun "Clear Files with Extension" and "FlattenPDF"
 	Added in Error Handling
