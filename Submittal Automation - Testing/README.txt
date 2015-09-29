@@ -1,6 +1,6 @@
 Basic Setup for Automating Job Submittals
 For most updated version visit:	https://github.com/earphone/Just-BCS-Things
-Last Updated:	09/25/2015
+Last Updated:	09/28/2015
 ===============================================================================
 To Run:
 
@@ -81,6 +81,8 @@ Useful:
 	jso docs:	http://help.adobe.com/livedocs/acrobat_sdk/11/Acrobat11_HTMLHelp/wwhelp/wwhimpl/js/html/wwhelp.htm?href=JS_API_AcroJS.89.1.html#1515776&accessible=true
 ==============================================================================	
 Log:
+	***09/28/2015***
+	Added in Error Handling
 	***09/25/2015***
 	Added in "Item #" annotations and addItem sub
 	***09/24/2015***

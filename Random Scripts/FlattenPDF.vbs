@@ -1,6 +1,9 @@
 'Basic Script to Flatten a PDF and extract bookmarks from original
 'For most updated version visit:	https://github.com/earphone/Just-BCS-Things
-'Last updated 09/24/2015
+'Last updated 09/28/2015
+
+'Enable Error Handling
+On Error Resume Next
 
 'Debugging
 	Dim debug
@@ -21,7 +24,6 @@ Do
 	Set WshShell = CreateObject("WScript.Shell")
 	curDir = WshShell.CurrentDirectory
 
-
 'Initial message	
 	cancel = MsgBox("Choose the PDF file to Flatten", 1)
 	If cancel = 2 Then
@@ -31,6 +33,7 @@ Do
 'Find file path
 	Set oExec=WshShell.Exec("mshta.exe ""about:<input type=file id=FILE><script>FILE.click();new ActiveXObject('Scripting.FileSystemObject').GetStandardStream(1).WriteLine(FILE.value);close();resizeTo(0,0);</script>""")
 	sFileSelected = oExec.StdOut.ReadLine
+	CheckError("Finding File")
 		If sFileSelected = "" Then
 			wscript.echo "No file was selected"
 			closeEverything
@@ -42,8 +45,7 @@ Do
 'Open PDF and run JSObject
 	If chosenPDF.Open(sFileSelected) Then
 	Else
-		MsgBox ("Cannot open PDF" + vbNewLine + "Quitting")
-		closeEverything
+		CheckError("Opening PDF" + vbNewLine + "QUITTING")
 	End If
 	
 	file = split(sFileSelected, ".")
@@ -53,11 +55,13 @@ Do
 	End If
 	
 	chosenPDF.Save 1, filepath
+	CheckError("Saving New File to:" + vbNewLine + filepath)
 	chosenPDF.Close
 	
 	If chosenPDF.Open(filepath) Then
 		Set jso = chosenPDF.GetJSObject
 		cancel = MsgBox ("Flatten now?" + jso.flattenPages(), 4)
+		CheckError("Flattening Pages")
 		If cancel = 7 Then
 			MsgBox("Closing")
 			closeEverything
@@ -68,13 +72,30 @@ Do
 	End If
 	
 	chosenPDF.Save 0, filepath
+	CheckError("Saving PDF after Flattening")
 	
 'Close Everything
 	resumeLoop = MsgBox ("Finished" + vbNewLine + "New file is located at the following path:" + vbNewLine + filepath + vbNewLine + vbNewLine + "Flatten another file?",4)
 loop While resumeLoop = 6
-	closeEverything
-	Sub closeEverything()
-		chosenPDF.Close
-		adobeAPP.Exit
-		wscript.quit
-	End Sub
+	closeEverything()
+
+'Sub to Close Everything	
+Sub closeEverything()
+	chosenPDF.Close
+	adobeAPP.Exit
+	wscript.quit
+End Sub
+	
+'Check Error Function
+Sub CheckError(errorString)
+	If Err.Number > 0 Then
+		log.WriteLine("ERROR OCCURRED when " + errorString)
+		log.WriteLine("    Err.Number = " + Err.Number)
+		log.WriteLine("    Err.Description = " + Err.Description)
+		log.WriteLine("    Err.Line = " + Err.Line + " Column = " + Err.Column)
+		log.WriteLine("    Err.Source = " + Err.Source)
+		log.Close
+		MsgBox "ERROR OCCURRED when " + errorString + vbNewLine + "QUITTING..."
+		WScript.Quit
+	End If
+End Sub

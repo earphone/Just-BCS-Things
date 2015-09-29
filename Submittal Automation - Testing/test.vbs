@@ -1,6 +1,9 @@
 'Script for Submittal Automation for BCS
 'For most updated version visit:	https://github.com/earphone/Just-BCS-Things
-'Last updated:		09/25/2015
+'Last updated:		09/28/2015
+
+'Enable Error Handling
+On Error Resume Next
 
 'Debugging
 	Dim debug
@@ -25,7 +28,7 @@
 
 'Reminder to close all excel, word, and PDF documents
 	warningString = "Please CLOSE All Excel, Word, and PDF documents before continuing." + vbNewLine + "Also, make sure that all CAT-CUTS are named correctly and that all MISC DOCUMENTS are edited for this job." + vbNewLine + "Failure to do so WILL cause unexpected problems." + vbNewLine + "Hit CANCEL to exit this script!"
-	warningMsg = MsgBox(warningString,VBOkCancel,48)
+	warningMsg = MsgBox(warningString,VBOkCancel)
 	If warningMsg = 2 Then
 		WScript.Quit
 	End If
@@ -120,21 +123,25 @@
 	Dim ccFSO, ccPath
 	Set ccFSO = CreateObject("Scripting.FileSystemObject")
 	ccPath = curDir + "\Cat-Cuts"
+	CheckError("Getting Cat-Cut folder")
 
 	'Get Certificate folder
 	Dim certFSO, certPath
 	Set certFSO = CreateObject("Scripting.FileSystemObject")
 	certPath = curDir + "\Certificates"
+	CheckError("Getting Certificate Folder")
 
 	'Get Misc Document folder
 	Dim miscFSO, miscPath
 	Set miscFSO = CreateObject("Scripting.FileSystemObject")
 	miscPath = curDir + "\Misc Documents"
+	CheckError("Getting Misc Document Folder")
 
 	'Get Completed Submittals folder
 	Dim completedFSO, completedPath
 	Set completedFSO = CreateObject("Scripting.FileSystemObject")
 	completedPath = curDir + "\Completed Submittals"
+	CheckError("Getting Completed Submittals Folder")
 
 'Debug the Initializations
 	If debug Then
@@ -159,6 +166,7 @@
 			log.WriteLine "Completed Folder exists."
 		End If
 		log.WriteLine ""
+		CheckError("Initializing")
 	End If
 	
 'Word Documents
@@ -182,6 +190,7 @@
 					Set tpWord = CreateObject("Word.Application")
 					tpWord.Visible = False
 					Set tpDocument = tpWord.Documents.Open(miscPath + "\" + targetfile.name)
+				CheckError("Setting up Initial " + splitPath(0))
 			End Select
 		Next
 	'Title Sheet
@@ -196,13 +205,15 @@
 		tsDocument.Save
 		tsDocument.saveas miscPath + "\Title Sheet.pdf", 17
 		completedPath = completedPath + "\" + shortTitle + " Completed_" + singleDate + ".pdf"
-		tsDocument.saveas completedPath, 17		
+		tsDocument.saveas completedPath, 17	
+		CheckError("Saving CompletedPDF")	
 		tsDocument.Close
 		tsWord.Quit
 		
 		'Remove unneeded pages based upon shop drawing choice
 'Open completed PDF doc and add in bookmarks for it
 		completedPDF.Open completedPath
+		CheckError("Opening completedPDF")
 		'If include shop drawings
 		If shopDrawings = 6 Then
 			completedPDF.DeletePages 1,1
@@ -220,6 +231,7 @@
 		'Save, Print to PDF, and Quit Word TC
 		tcDocument.Save
 		tcDocument.saveas miscPath + "\Telecommunications Contractor.pdf", 17
+		CheckError("Saving Telecommunications Contractor")
 		tcDocument.Close
 		tcWord.Quit
 		
@@ -231,6 +243,7 @@
 		'Save, Print to PDF, and Quit Word TP
 		tpDocument.Save
 		tpDocument.saveas miscPath + "\Test Plan.pdf", 17
+		CheckError("Saving Test Plan PDF")
 		tpDocument.Close
 		tpWord.Quit
 	
@@ -246,7 +259,9 @@
 	'Table of Contents
 		'Setup Excel for ToC
 		Set tocWorkbook = allExcel.Workbooks.Open(miscPath + "\Table of Contents.xml")
+		CheckError("Getting tocWorkbook")
 		Set tocWorksheet = tocWorkbook.Worksheets("Table 1")
+		CheckError("Getting tocWorksheet")
 
 		'Fill in ToC main info
 		tocWorksheet.Cells(1,1) = longTitle
@@ -279,7 +294,9 @@
 					tocWorksheet.Cells(11,4) = splitPath(1)
 				End If
 			End If
+			CheckError("Setting up ToC information for " + targetfile.name)
 		Next
+		
 		'Fill in Product Info
 		GetFileNames ccFSO, ccPath
 		For Each targetfile In files
@@ -326,6 +343,7 @@
 			tocWorksheet.Cells(rowNumber,12) = splitPath(0)
 			rowNumber = rowNumber + 1
 			itemNumber = itemNumber + 1
+			CheckError("Setting Up ToC information for " + targetfile.name)
 		Next
 		
 		'Add in field for shop drawings if adding in
@@ -333,12 +351,14 @@
 			tocWorksheet.Cells(rowNumber,1) = itemNumber
 			tocWorksheet.Cells(rowNumber,2) = "Document"
 			tocWorksheet.Cells(rowNumber,6) = "Shop Drawings"
+			CheckError("Adding in Shop Drawings Fields")
 		End If
 		
 		'Save, Print to PDF, and Quit Excel ToC
 		allExcel.ActiveWorkbook.Save
 		tocWorkbook.ActiveSheet.ExportAsFixedFormat EXCEL_PDF, miscPath & "\Table of Contents.pdf", EXCEL_QualityStandard, TRUE,FALSE,,,False
 		allExcel.ActiveWorkbook.Close
+		CheckError("Saving Table of Contents PDF")
 		
 	'Key Personnel List
 		'Setup Excel for KPL	GetFileNames miscFSO, miscPath
@@ -348,8 +368,10 @@
 			splitPath = Split(targetfile.name, " ")
 			If splitPath(0) = "Key" Then
 				Set kplWorkbook = allExcel.Workbooks.Open(miscPath + "\" + targetfile.name)
+				CheckError("Getting KPLWorkbook")
 				Set kplWorksheet =  kplWorkbook.Worksheets("Sheet1")
-				If debut Then
+				CheckError("Getting KPLWorksheet")
+				If debug Then
 					log.WriteLine "		Key Personnel List file found"
 				End If
 				'Fill in KPL info
@@ -360,6 +382,7 @@
 				allExcel.ActiveWorkbook.Save
 				kplWorkbook.ActiveSheet.ExportAsFixedFormat EXCEL_PDF, miscPath & "\Key Personnel List.pdf", EXCEL_QualityStandard, TRUE,FALSE,,,False
 				allExcel.ActiveWorkbook.Close
+				CheckError("Setting Up Excel for KPL")
 			End If
 		Next
 		allExcel.Quit
@@ -374,7 +397,9 @@
 					log.WriteLine "     " + targetfile.name
 				End If
 				fileCount = fileCount + 1
+				CheckError("Getting File Names")
 			Next
+			CheckError("Getting File Names")			
 		End Sub		
 		
 	'Word Functions
@@ -389,6 +414,7 @@
 			selection.Find.MatchWholeWord = True
 			selection.Find.Replacement.Text = replace
 			selection.Find.Execute ,,,,,,,,,,wdReplaceAll
+			CheckError("Searching and Replacing")
 		End Sub
 		
 	'Add Pages to PDF
@@ -407,6 +433,7 @@
 				AdobeAPP.MenuItemExecute "NewBookmark"
 				AdobeBookmark.GetByTitle pdfDoc, "Untitled"
 				AdobeBookmark.SetTitle Title
+				CheckError("Adding Bookmark")
 			End Sub
 			
 			Sub addItem(page, words)
@@ -426,6 +453,7 @@
 				props.rect = popupRect
 				props.fillColor = jso.Color.white
 				annot.setProps props
+				CheckError("Adding Item")
 			End Sub
 		
 		AddBookmark pageView, completedAPP, completedBookmark, completedPDF, 0, "Title Page"
@@ -556,3 +584,17 @@ If shopDrawings = 6 Then
 Else
 	WScript.Echo "Finished" + vbNewLine + "Please double check your finished file in the following path:" + vbNewLine + completedPath
 End If
+
+'Check Error Function
+Sub CheckError(errorString)
+	If Err.Number > 0 Then
+		log.WriteLine("ERROR OCCURRED when " + errorString)
+		log.WriteLine("    Err.Number = " + Err.Number)
+		log.WriteLine("    Err.Description = " + Err.Description)
+		log.WriteLine("    Err.Line = " + Err.Line + " Column = " + Err.Column)
+		log.WriteLine("    Err.Source = " + Err.Source)
+		log.Close
+		MsgBox "ERROR OCCURRED when " + errorString + vbNewLine + "QUITTING..."
+		WScript.Quit
+	End If
+End Sub

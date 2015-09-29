@@ -1,3 +1,10 @@
+'Basic Script to Clear Files with an User Input Extension
+'For most updated version visit:	https://github.com/earphone/Just-BCS-Things
+'Last updated 09/28/2015
+
+'Enable Error Handling
+On Error Resume Next
+
 'Debugging
 	Dim debug
 	debug = False
@@ -33,6 +40,7 @@ Do
 			count = count + 1
 			deletedFiles = deletedFiles & targetfile.name & vbNewLine
 			FSO.DeleteFile(curDir + "\" + targetfile.name)
+			CheckError("Deleting: " + targetfile.name)
 		End If
 	Next
 	
@@ -42,4 +50,18 @@ Do
 		resumeLoop = MsgBox (deletedFiles + vbNewLine + vbNewLine + "Run Again?", 4)
 	End If
 	
-	Loop While resumeLoop = 6
+	Loop While resumeLoop = 6	
+	
+'Check Error Function
+Sub CheckError(errorString)
+	If Err.Number > 0 Then
+		log.WriteLine("ERROR OCCURRED when " + errorString)
+		log.WriteLine("    Err.Number = " + Err.Number)
+		log.WriteLine("    Err.Description = " + Err.Description)
+		log.WriteLine("    Err.Line = " + Err.Line + " Column = " + Err.Column)
+		log.WriteLine("    Err.Source = " + Err.Source)
+		log.Close
+		MsgBox "ERROR OCCURRED when " + errorString + vbNewLine + "QUITTING..."
+		WScript.Quit
+	End If
+End Sub
