@@ -21,6 +21,7 @@
 * [FlattenPDF](https://github.com/earphone/Just-BCS-Things/blob/master/Random%20Scripts/FlattenPDF.vbs)
   This is an even smaller script that creates a new file thats exactly the same as the old one except with everything flattened to become uneditable
   * Double click the vbs script to run it
+  * File can also be dragged and dropped onto the script
   * Choose the original file to be flattened
   * Asks user to confirm flattening
   * New flattened file is saved with "_FLATTENED" added to the end of the file name within the same folder
