@@ -14,11 +14,13 @@ Scripts:
 		Choose PDF file
 		Says "Finished" when done
 	FlattenPDf
-		Asks user to choose a PDF file to flatten
+		Asks user to choose a PDF file to flatten or can be drag and dropped onto the script
 		If file exists then asks user if it's ok to continue
 		Flattens and saves as new file within same folder with "_FLATTENED" added to the title
 
 Log:
+	***10/02/2015***
+	Added in ability to drag and drop files onto FlattenPDF
 	***09/29/2015***
 	Fixed Error Handling with Check Error Sub
 	***09/28/2015***

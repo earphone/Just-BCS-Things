@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<TITLE> TEST PAGE </TITLE>
+		<script src="https://appsforoffice.microsoft.com/lib/1/hosted/Office.js"/>
+		<SCRIPT>
+			function test() {
+				alert("testing");
+			}
+		</SCRIPT>
+	</head>
+	<body>
+		<h1> Test Page </h1>
+			<button type="button" onclick="test()" onmouseover="this.style.color = 'red'" onmouseout="this.style.color = 'black'">Try it</button>
+		<h1> Fields </h1>
+			<form id="frm1" action="form_action.asp">
+				Short Title: <input type="text" name="shorttitle"><br>
+				Long Title: <input type="text" name="longtitle"><br>
+				Address: <input type="text" name="address"><br>
+				Spec Section: <input type="text" name="specsection"><br>
+				Version: <input type="text" name="version"><br>
+				Date: <input type="text" name="todaysdate"><br>
+				<input type="button" onclick="myFunction()" value="Submit">
+			</form>
+		Office.initialize = function() {
+		http://help.adobe.com/livedocs/acrobat_sdk/10/Acrobat10_HTMLHelp/wwhelp/wwhimpl/common/html/wwhelp.htm?context=Acrobat10_SDK_HTMLHelp&file=JS_Dev_Overview.71.1.html
+		
+		https://msdn.microsoft.com/en-us/library/office/fp160953.aspx
+		};
+	</body>
+</html>

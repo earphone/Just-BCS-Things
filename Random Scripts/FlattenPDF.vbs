@@ -24,20 +24,26 @@ Do
 	Set WshShell = CreateObject("WScript.Shell")
 	curDir = WshShell.CurrentDirectory
 
-'Initial message	
-	cancel = MsgBox("Choose the PDF file to Flatten", 1)
-	If cancel = 2 Then
-		wscript.quit
-	End If
-		
-'Find file path
-	Set oExec=WshShell.Exec("mshta.exe ""about:<input type=file id=FILE><script>FILE.click();new ActiveXObject('Scripting.FileSystemObject').GetStandardStream(1).WriteLine(FILE.value);close();resizeTo(0,0);</script>""")
-	sFileSelected = oExec.StdOut.ReadLine
-	CheckError("Finding File")
-		If sFileSelected = "" Then
-			wscript.echo "No file was selected"
-			closeEverything
+'Check if PDF was dragged and dropped or not
+	 Set objArgs = WScript.Arguments 
+	 If objArgs.Count = 1 Then
+		sFileSelected = objArgs(0)
+	 Else 
+	'Initial message	
+		cancel = MsgBox("Choose the PDF file to Flatten", 1)
+		If cancel = 2 Then
+			wscript.quit
 		End If
+			
+	'Find file path
+		Set oExec=WshShell.Exec("mshta.exe ""about:<input type=file id=FILE><script>FILE.click();new ActiveXObject('Scripting.FileSystemObject').GetStandardStream(1).WriteLine(FILE.value);close();resizeTo(0,0);</script>""")
+		sFileSelected = oExec.StdOut.ReadLine
+	End If
+	CheckError("Finding File")
+	If sFileSelected = "" Then
+		wscript.echo "No file was selected"
+		closeEverything
+	End If
 	If debug Then
 		wscript.echo sFileSelected
 	End If

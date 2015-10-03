@@ -19,7 +19,7 @@
 'Get current filepath
 	Set WshShell = CreateObject("WScript.Shell")
 	curDir = WshShell.CurrentDirectory
-
+	
 'Initial message	
 	initialClick = MsgBox("Make sure that the bookmarks are input into the Excel file" + vbNewLine + "Choose the PDF file", 1)
 		If initialClick = 2 Then
@@ -29,10 +29,11 @@
 'Find file path
 	Set oExec=WshShell.Exec("mshta.exe ""about:<input type=file id=FILE><script>FILE.click();new ActiveXObject('Scripting.FileSystemObject').GetStandardStream(1).WriteLine(FILE.value);close();resizeTo(0,0);</script>""")
 	sFileSelected = oExec.StdOut.ReadLine
-		If sFileSelected = "" Then
-			wscript.echo "No file was selected"
-			wscript.quit
-		End If
+	CheckError("Finding File")
+	If sFileSelected = "" Then
+		wscript.echo "No file was selected"
+		closeEverything
+	End If
 	If debug Then
 		wscript.echo sFileSelected
 	End If
