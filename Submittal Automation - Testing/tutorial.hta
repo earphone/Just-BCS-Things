@@ -1,0 +1,34 @@
+<!-- edited 11/29/2016 -->
+<head>
+<title>HTA Test</title>
+<HTA:APPLICATION 
+     APPLICATIONNAME="BCS HTA Test"
+     SCROLL="yes"
+     SINGLEINSTANCE="yes"
+     WINDOWSTATE="normal"
+	 BORDER="thick"
+>
+</head>
+
+<!-- VBScript run in the script tag -->
+<!-- vbCrlf is the vbs constant for a new line -->
+<script language="VBScript">
+    Sub TestSub
+        Msgbox longTitleText.value & vbCrlf & shortTitleText.value & vbCrlf & addressText.value & vbCrlf & versionText.value
+    End Sub
+</script>
+
+<!-- Actual body of the hta (similiar to HTML) -->
+
+<body>
+<input type="text" name="longTitleText" value="Long Title"><br>
+<input type="text" name="shortTitleText" value="Short Title"><br>
+<input type="text" name="addressText" value="Address"><br>
+<input type="text" name="versionText" value="Version"><br>
+<input type="button" value="Run Script" name="run_button"  onClick="TestSub">
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" value="Run Script" name="run_button"  onClick="TestSub"><br>
+<img src="https://giant.gfycat.com/BronzeLastingJunco.webm" alt="There's supposed to be a gif here..."><br>
+
+
+</body>

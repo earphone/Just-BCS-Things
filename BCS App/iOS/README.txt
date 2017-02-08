@@ -1,0 +1,1 @@
+This folder contains everything for the iOS version of the BCS APP.

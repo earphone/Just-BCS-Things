@@ -1,0 +1,26 @@
+Source For Checkbox Input
+
+--==--==[ VBScript Source ]==--==--
+Sub CheckChkBx
+  Set CBForm = Document.ChkBoxFrm
+   If CBForm.ChkBx1.Checked Then ChkBx1 = CBForm.ChkBx1.Value & VBCRLF
+   If CBForm.ChkBx2.Checked Then ChkBx2 = CBForm.ChkBx2.Value & VBCRLF
+   If CBForm.ChkBx3.Checked Then ChkBx3 = CBForm.ChkBx3.Value
+   WhatsChecked = ChkBx1 & ChkBx2 & ChkBx3
+   If WhatsChecked = "" Then
+   MsgBox "You Didn't Select Anything", 64,"Checkbox Selections"
+   Else
+MsgBox "You Selected:" & vbcrlf & WhatsChecked, 64,"Checkbox Selections"
+   End If
+ChkBx1 = ""
+ChkBx2 = ""
+ChkBx3 = ""
+End Sub 'CheckChkBx
+
+--==--==[ HTML Source ]==--==--
+<FONT SIZE=2><B><I>Check-Box</I></B></FONT><BR>
+<font color="#000000"><i><fieldset><legend>Select One or More</legend></i></font>
+<input style="background-color:#00ff00" name="ChkBx1" Checked value="Box1" type="checkbox">CheckBox 1
+<input style="background-color:#ffff00" name="ChkBx2" value="Box2" type="checkbox">CheckBox 2
+<input style="background-color:#ff0000" name="ChkBx3" value="Box3" type="checkbox">CheckBox 3
+<INPUT STYLE="filter:progid:DXImageTransform.Microsoft.Gradient (GradientType=0, StartColorStr='#8ff2ff', EndColorStr='#008785')" type="Button" Value="Check"  onclick="CheckChkBx">

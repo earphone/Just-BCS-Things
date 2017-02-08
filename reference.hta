@@ -1,0 +1,635 @@
+  <HTML>
+  <HEAD>
+  <TITLE>Input Types</TITLE>
+  
+      <HTA:APPLICATION
+      Application ID = "InputTypes"
+      APPLICATIONNAME = "InputTypes"
+      BORDER = "Thick"
+      BORDERSTYLE = "Complex"
+      CAPTION = "Yes"
+      CONTEXTMENU = "no"
+      ICON = ""
+      INNERBORDER = "yes"
+      MAXIMIZEBUTTON = "yes"
+      MINIMIZEBUTTON = "yes"
+      NAVIGABLE = "Yes"
+      SCROLL = "Yes"
+      SCROLLFLAT = "Yes"
+      SELECTION = "No"
+      SHOWINTASKBAR = "Yes"
+      SINGLEINSTANCE = "No"
+      SYSMENU = "yes"
+      VERSION = "1.0"
+      WINDOWSTATE = "Normal"
+      />
+  </HEAD>
+  <!-- GradientType=0 - Top to Bottom, GradientType=1 - Left to Right -->
+  <BODY STYLE="font:9pt arial; color:#000000; filter:progid:DXImageTransform.Microsoft.Gradient (GradientType=0, StartColorStr='#ddd7ff', EndColorStr='#006d9f')">
+    <SCRIPT LANGUAGE="VBScript">
+  
+  Dim fso, oFile, Source
+      Set fso = CreateObject("Scripting.FileSystemObject")
+      Set objShell = CreateObject("WScript.Shell") 
+  '<!--#################[ Set Dialog Size and Position ]######################-->
+      Sub StartUp()
+          Dim x,y
+          x = (window.screen.width - 900) / 2
+          y = (window.screen.height - 910) / 2
+          If x < 0 Then x = 0
+          If y < 0 Then y = 0
+          window.resizeTo 900,910
+          window.moveTo x,y
+      End Sub
+      StartUp
+  
+  '<!--#####################[ Submit Text ]##########################-->
+      Sub SubmitText
+          MsgBox "You Entered" & vbcrlf & txt.value, 64,"Text Input"
+      End Sub 'SubmitText
+  
+  '<!--#####################[ Submit Text Area ]#####################-->
+      Sub Submitarea
+      Set oFile = fso.OpenTextFile( "TextArea.txt",8,true)
+          sTxtarea = document.all("Txtarea").Value
+          oFIle.Write sTxtarea & vbCRLF
+          MsgBox "Your text has been added to TextArea.txt", 64,"Textarea Input"
+      oFile.close
+      End Sub 'Submitarea
+      Sub OpenTxtArea
+          ShellRun = objShell.Run ("%comspec% /c Start Notepad TextArea.txt", 0, 1)
+      End Sub 'OpenTxtArea
+  
+  
+  '<!--#######################[ Radio Button ]#######################-->
+      Sub CheckRadio
+          If rbtn(0).Checked Then
+          MsgBox "You Selected Option 1", 64,"Radio Button"
+          End If
+      
+          If rbtn(1).Checked Then
+          MsgBox "You Selected Option 2", 64,"Radio Button"
+          End If
+      
+          If rbtn(2).Checked Then
+          MsgBox "You Selected Option 3", 64,"Radio Button"
+          End If
+      End Sub 'CheckRadio
+  
+  '<!--#######################[ Checkbox ]#######################-->
+      Sub CheckChkBx
+        Set CBForm = Document.ChkBoxFrm
+         If CBForm.ChkBx1.Checked Then ChkBx1 = CBForm.ChkBx1.Value & VBCRLF
+         If CBForm.ChkBx2.Checked Then ChkBx2 = CBForm.ChkBx2.Value & VBCRLF
+         If CBForm.ChkBx3.Checked Then ChkBx3 = CBForm.ChkBx3.Value
+             WhatsChecked = ChkBx1 & ChkBx2 & ChkBx3
+         If WhatsChecked = "" Then
+             MsgBox "You Didn't Select Anything", 64,"Checkbox Selections"
+             Else
+          MsgBox "You Selected:" & vbcrlf & WhatsChecked, 64,"Checkbox Selections"
+         End If
+      
+      ChkBx1 = ""
+      ChkBx2 = ""
+      ChkBx3 = ""
+      End Sub 'CheckChkBx
+  
+  '<!--#######################[ Dropdown Menu OnChange ]#######################-->
+      Sub RunDropChange
+          Msgbox "You Selected Option" & " " & DropDown1.Value, 64,"Dropdown Menu OnChange"
+      End Sub 'RunDropChange
+  
+  '<!--#######################[ Dropdown Menu OnClick ]#######################-->
+      Sub RunDropClick
+          Msgbox "You Selected Option" & " " & DropDown2.Value, 64,"Dropdown Menu OnClick"
+      End Sub 'RunDropClick
+  
+  '<!--#######################[ Listbox Menu OnChange ]#######################-->
+      Sub RunList
+          Msgbox "You Selected Option" & " " & Listbox1.Value, 64,"Listbox Menu OnChange"
+      End Sub
+  
+  '<!--#######################[ Multi-Select Listbox Menu ]#######################-->
+      Sub RunMultiList
+          For i = 0 to (MultiListBox.Options.Length - 1)
+              If (MultiListBox.Options(i).Selected) Then
+                  strChoices = strChoices  & "Option " & MultiListBox.Options(i).Value & vbcrlf
+              End If	
+          Next
+          Msgbox "You Selected:" & vbcrlf & strChoices, 64,"Multi-Select ListBox Menu"
+      End Sub 'RunMultiList
+  
+  
+  '<!--#######################[ Listbox Menu From File ]#######################-->
+      Sub Window_Onload
+          ForReading = 1
+          strNewFile = "Phrases.txt"
+          Set objFSO = CreateObject("Scripting.FileSystemObject")
+          Set objFile = objFSO.OpenTextFile _
+              (strNewFile, ForReading)
+          Do Until objFile.AtEndOfStream
+              strLine = objFile.ReadLine
+              Set objOption = Document.createElement("OPTION")
+              objOption.Text = strLine
+              objOption.Value = strLine
+              AvailablePhrases.Add(objOption)
+          Loop
+          objFile.Close
+      End Sub
+  
+      Sub onthefly
+          Selection = AvailablePhrases.Value
+          MsgBox "You Selected:" & VBCRLF & Selection, 64,"On-The-Fly List Box"
+      End Sub 'onthefly
+      Sub OpenPhrases
+          ShellRun = objShell.Run ("%comspec% /c Start Notepad Phrases.txt", 0, 1)
+      End Sub '
+  '<!--#######################[ Browse for File ]#######################-->
+      Sub Readfile
+       sFile = datafile.Value
+       If sFile = "" Then
+          MsgBox "Select a File First.      ", 64,"Browse for File"
+       Else
+          ShellRun = objShell.Run ("%comspec% /c Start Notepad "& sFile, 0, 1)
+      End If
+      End Sub 'Readfile
+  
+  '<!--###############[ View Source for Each Input Type ]###############-->
+      Sub Source1
+       Set Source = fso.CreateTextFile("Source.txt", True)
+          Source.WriteLine ("Source For Text Input")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ VBScript Source ]==--==--")
+          Source.WriteLine ("Sub SubmitText")
+          Source.WriteLine ("MsgBox "& chr(34) &"You Entered"& chr(34) &" & vbcrlf & txt.value, 64, "& chr(34) &"Text Input"& chr(34) &"  ")
+          Source.WriteLine ("End Sub 'SubmitText")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ HTML Source ]==--==--")
+          Source.WriteLine ("<input type="& chr(34) &"text"& chr(34) &" style="& chr(34) &"background-color:#ffb7d6"& chr(34) &" size="& chr(34) &"16"& chr(34) &" name="& chr(34) &"txt"& chr(34) &" value="& chr(34) &"Enter text here"& chr(34) &">")
+          Source.WriteLine ("<input type="& chr(34) &"button"& chr(34) &" value="& chr(34) &"Submit"& chr(34) &" onclick="& chr(34) &"SubmitText"& chr(34) &">")
+          Source.Close
+          ShellRun = objShell.Run ("%comspec% /c Start Notepad Source.txt", 0, 1)
+      End Sub 'Source1
+  
+      Sub Source2
+       Set Source = fso.CreateTextFile("Source.txt", True)
+           Source.WriteLine ("Source For Textarea Input")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ VBScript Source ]==--==--")
+          Source.WriteLine ("Dim fso, oFile")
+          Source.WriteLine ("Set fso = CreateObject("& chr(34) &"Scripting.FileSystemObject"& chr(34) &")")
+          Source.WriteLine ("Set objShell = CreateObject("& chr(34) &"WScript.Shell"& chr(34) &") ")
+          Source.WriteLine ("")
+          Source.WriteLine ("Sub Submitarea")
+          Source.WriteLine ("Set oFile = fso.OpenTextFile( "& chr(34) &"TextArea.txt"& chr(34) &",8,true)")
+          Source.WriteLine ("sTxtarea = document.all("& chr(34) &"Txtarea"& chr(34) &").Value")
+          Source.WriteLine ("oFIle.Write sTxtarea & vbCRLF")
+          Source.WriteLine ("MsgBox "& chr(34) &"Your text has been added to TextArea.txt"& chr(34) &", 64,"& chr(34) &"Textarea Input"& chr(34) &"")
+          Source.WriteLine ("oFile.close")
+          Source.WriteLine ("End Sub 'Submitarea")
+          Source.WriteLine ("Sub OpenTxtArea")
+          Source.WriteLine ("ShellRun = objShell.Run ("& chr(34) &"%comspec% /c Start Notepad TextArea.txt"& chr(34) &", 0, 1)")
+          Source.WriteLine ("End Sub 'OpenTxtArea")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ HTML Source ]==--==--")
+          Source.WriteLine ("<form method="& chr(34) &"POST"& chr(34) &">")
+          Source.WriteLine ("<TEXTAREA style="& chr(34) &"")
+          Source.WriteLine ("Height:193;")
+          Source.WriteLine ("Width:100%;")
+          Source.WriteLine ("font-Size:12;")
+          Source.WriteLine ("color:#000000;")
+          Source.WriteLine ("background-color:#ffffe7;")
+          Source.WriteLine ("font-weight:normal;")
+          Source.WriteLine ("font-family:MS Sans Serif"& chr(34) &" ")
+          Source.WriteLine ("TITLE="& chr(34) &""& chr(34) &" ")
+          Source.WriteLine ("NAME=Txtarea TABORDER=2 WRAP=PHYSICAL>The contents of this text area will be written to TextArea.txt when you click submit.</TEXTAREA>")
+          Source.WriteLine ("<input type="& chr(34) &"button"& chr(34) &" value="& chr(34) &"Submit"& chr(34) &" onclick="& chr(34) &"Submitarea"& chr(34) &">")
+          Source.WriteLine ("<input type="& chr(34) &"reset"& chr(34) &" value="& chr(34) &"Reset"& chr(34) &">")
+          Source.WriteLine ("<input type="& chr(34) &"button"& chr(34) &" value="& chr(34) &"Open"& chr(34) &" onclick="& chr(34) &"OpenTxtArea"& chr(34) &">")
+          Source.Close
+          ShellRun = objShell.Run ("%comspec% /c Start Notepad Source.txt", 0, 1)
+      End Sub 'Source2
+  
+      Sub Source3
+       Set Source = fso.CreateTextFile("Source.txt", True)
+           Source.WriteLine ("Source For Radio Button Input")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ VBScript Source ]==--==--")     
+          Source.WriteLine ("Sub CheckRadio")
+          Source.WriteLine ("If rbtn(0).Checked Then")
+          Source.WriteLine ("MsgBox "& chr(34) &"You Selected Option 1"& chr(34) &", 64,"& chr(34) &"Radio Button"& chr(34) &"")
+          Source.WriteLine ("End If")
+          Source.WriteLine ("")
+          Source.WriteLine ("If rbtn(1).Checked Then")
+          Source.WriteLine ("MsgBox "& chr(34) &"You Selected Option 2"& chr(34) &", 64,"& chr(34) &"Radio Button"& chr(34) &"")
+          Source.WriteLine ("End If")
+          Source.WriteLine ("")
+          Source.WriteLine ("If rbtn(2).Checked Then")
+          Source.WriteLine ("MsgBox "& chr(34) &"You Selected Option 3"& chr(34) &", 64,"& chr(34) &"Radio Button"& chr(34) &"")
+          Source.WriteLine ("End If")
+          Source.WriteLine ("")
+          Source.WriteLine ("End Sub 'CheckRadio")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ HTML Source ]==--==--")
+          Source.WriteLine ("<FONT SIZE=2><B><I>Radio Button</I></B></FONT><BR>")
+          Source.WriteLine ("<font color="& chr(34) &"#000000"& chr(34) &"><i><fieldset><legend>Select One</legend></i></font>")
+          Source.WriteLine ("<input type="& chr(34) &"radio"& chr(34) &" style="& chr(34) &"background-color:#ff0000"& chr(34) &" checked name="& chr(34) &"rbtn"& chr(34) &" value="& chr(34) &"0"& chr(34) &">Option 1")
+          Source.WriteLine ("<input type="& chr(34) &"radio"& chr(34) &" style="& chr(34) &"background-color:#ffff00"& chr(34) &" name="& chr(34) &"rbtn"& chr(34) &" value="& chr(34) &"1"& chr(34) &">Option 2")
+          Source.WriteLine ("<input type="& chr(34) &"radio"& chr(34) &" style="& chr(34) &"background-color:#00ff00"& chr(34) &" name="& chr(34) &"rbtn"& chr(34) &" value="& chr(34) &"2"& chr(34) &">Option 3")
+          Source.WriteLine ("<INPUT STYLE="& chr(34) &"filter:progid:DXImageTransform.Microsoft.Gradient (GradientType=0, StartColorStr='#a1ff97', EndColorStr='#009f00')"& chr(34) &" type="& chr(34) &"Button"& chr(34) &" Value="& chr(34) &"Check"& chr(34) &"  onclick="& chr(34) &"CheckRadio"& chr(34) &">")
+          Source.Close
+          ShellRun = objShell.Run ("%comspec% /c Start Notepad Source.txt", 0, 1)
+      End Sub 'Source3
+  
+      Sub Source4
+       Set Source = fso.CreateTextFile("Source.txt", True)
+           Source.WriteLine ("Source For Checkbox Input")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ VBScript Source ]==--==--")
+          Source.WriteLine ("Sub CheckChkBx")
+          Source.WriteLine ("  Set CBForm = Document.ChkBoxFrm")
+          Source.WriteLine ("   If CBForm.ChkBx1.Checked Then ChkBx1 = CBForm.ChkBx1.Value & VBCRLF")
+          Source.WriteLine ("   If CBForm.ChkBx2.Checked Then ChkBx2 = CBForm.ChkBx2.Value & VBCRLF")
+          Source.WriteLine ("   If CBForm.ChkBx3.Checked Then ChkBx3 = CBForm.ChkBx3.Value")
+          Source.WriteLine ("   WhatsChecked = ChkBx1 & ChkBx2 & ChkBx3")
+          Source.WriteLine ("   If WhatsChecked = "& chr(34) &""& chr(34) &" Then")
+          Source.WriteLine ("   MsgBox "& chr(34) &"You Didn't Select Anything"& chr(34) &", 64,"& chr(34) &"Checkbox Selections"& chr(34) &"")
+          Source.WriteLine ("   Else")
+          Source.WriteLine ("MsgBox "& chr(34) &"You Selected:"& chr(34) &" & vbcrlf & WhatsChecked, 64,"& chr(34) &"Checkbox Selections"& chr(34) &"")
+          Source.WriteLine ("   End If")
+          Source.WriteLine ("ChkBx1 = "& chr(34) &""& chr(34) &"")
+          Source.WriteLine ("ChkBx2 = "& chr(34) &""& chr(34) &"")
+          Source.WriteLine ("ChkBx3 = "& chr(34) &""& chr(34) &"")
+          Source.WriteLine ("End Sub 'CheckChkBx")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ HTML Source ]==--==--")
+          Source.WriteLine ("<FONT SIZE=2><B><I>Check-Box</I></B></FONT><BR>")
+          Source.WriteLine ("<font color="& chr(34) &"#000000"& chr(34) &"><i><fieldset><legend>Select One or More</legend></i></font>")
+          Source.WriteLine ("<input style="& chr(34) &"background-color:#00ff00"& chr(34) &" name="& chr(34) &"ChkBx1"& chr(34) &" Checked value="& chr(34) &"Box1"& chr(34) &" type="& chr(34) &"checkbox"& chr(34) &">CheckBox 1")
+          Source.WriteLine ("<input style="& chr(34) &"background-color:#ffff00"& chr(34) &" name="& chr(34) &"ChkBx2"& chr(34) &" value="& chr(34) &"Box2"& chr(34) &" type="& chr(34) &"checkbox"& chr(34) &">CheckBox 2")
+          Source.WriteLine ("<input style="& chr(34) &"background-color:#ff0000"& chr(34) &" name="& chr(34) &"ChkBx3"& chr(34) &" value="& chr(34) &"Box3"& chr(34) &" type="& chr(34) &"checkbox"& chr(34) &">CheckBox 3")
+          Source.WriteLine ("<INPUT STYLE="& chr(34) &"filter:progid:DXImageTransform.Microsoft.Gradient (GradientType=0, StartColorStr='#8ff2ff', EndColorStr='#008785')"& chr(34) &" type="& chr(34) &"Button"& chr(34) &" Value="& chr(34) &"Check"& chr(34) &"  onclick="& chr(34) &"CheckChkBx"& chr(34) &">")
+          Source.Close
+          ShellRun = objShell.Run ("%comspec% /c Start Notepad Source.txt", 0, 1)
+      End Sub 'Source4
+  
+      Sub Source5
+       Set Source = fso.CreateTextFile("Source.txt", True)
+           Source.WriteLine ("Source For Drop Down Menu onChange")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ VBScript Source ]==--==--")
+          Source.WriteLine ("Sub RunDropChange")
+          Source.WriteLine ("Msgbox "& chr(34) &"You Selected Option"& chr(34) &" & "& chr(34) &" "& chr(34) &" & DropDown1.Value, 64,"& chr(34) &"Dropdown Menu OnChange"& chr(34) &"")
+          Source.WriteLine ("End Sub 'RunDropChange")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ HTML Source ]==--==--")
+          Source.WriteLine ("<FONT SIZE=2><B><I>Drop Down Menu onChange</I></B></FONT><BR>")
+          Source.WriteLine ("<select size="& chr(34) &"1"& chr(34) &" name="& chr(34) &"DropDown1"& chr(34) &" onChange="& chr(34) &"RunDropChange"& chr(34) &">")
+          Source.WriteLine ("<option>Choose One&nbsp&nbsp&nbsp&nbsp&nbsp</option>")
+          Source.WriteLine ("<option value="& chr(34) &"1"& chr(34) &">onChange Option 1</option>")
+          Source.WriteLine ("<option value="& chr(34) &"2"& chr(34) &">onChange Option 2</option>")
+          Source.WriteLine ("<option value="& chr(34) &"3"& chr(34) &">onChange Option 3</option>")
+          Source.WriteLine ("<option value="& chr(34) &"4"& chr(34) &">onChange Option 4</option>")
+          Source.WriteLine ("</select>")
+          Source.Close
+          ShellRun = objShell.Run ("%comspec% /c Start Notepad Source.txt", 0, 1)
+      End Sub 'Source5
+  
+      Sub Source6
+       Set Source = fso.CreateTextFile("Source.txt", True)
+           Source.WriteLine ("Source For Drop Down Menu onClick")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ VBScript Source ]==--==--")
+          Source.WriteLine ("Sub RunDropClick")
+          Source.WriteLine ("Msgbox "& chr(34) &"You Selected Option"& chr(34) &" & "& chr(34) &" "& chr(34) &" & DropDown2.Value, 64,"& chr(34) &"Dropdown Menu OnClick"& chr(34) &"")
+          Source.WriteLine ("End Sub 'RunDropClick")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ HTML Source ]==--==--")
+          Source.WriteLine ("<FONT SIZE=2><B><I>Drop Down Menu onClick</I></B></FONT><BR>")
+          Source.WriteLine ("<select size="& chr(34) &"1"& chr(34) &" name="& chr(34) &"DropDown2"& chr(34) &">")
+          Source.WriteLine ("<option value="& chr(34) &"1"& chr(34) &">OnClick Option 1&nbsp&nbsp&nbsp&nbsp&nbsp</option>")
+          Source.WriteLine ("<option value="& chr(34) &"2"& chr(34) &">OnClick Option 2</option>")
+          Source.WriteLine ("<option value="& chr(34) &"3"& chr(34) &">OnClick Option 3</option>")
+          Source.WriteLine ("<option value="& chr(34) &"4"& chr(34) &">OnClick Option 4</option>")
+          Source.WriteLine ("</select>")
+          Source.WriteLine ("<input type="& chr(34) &"button"& chr(34) &" onClick="& chr(34) &"RunDropClick"& chr(34) &" value="& chr(34) &"Submit"& chr(34) &">")
+          Source.Close
+          ShellRun = objShell.Run ("%comspec% /c Start Notepad Source.txt", 0, 1)
+      End Sub 'Source6
+  
+      Sub Source7
+       Set Source = fso.CreateTextFile("Source.txt", True)
+           Source.WriteLine ("Source For Listbox Menu OnChange")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ VBScript Source ]==--==--")
+          Source.WriteLine ("Sub RunList")
+          Source.WriteLine ("Msgbox "& chr(34) &"You Selected Option"& chr(34) &" & "& chr(34) &" "& chr(34) &" & Listbox1.Value, 64,"& chr(34) &"Listbox Menu OnChange"& chr(34) &"")
+          Source.WriteLine ("End Sub")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ HTML Source ]==--==--")
+          Source.WriteLine ("<FONT SIZE=2><B><I>Select an Option:</I></B></FONT><BR>")
+          Source.WriteLine ("<select size="& chr(34) &"4"& chr(34) &" name="& chr(34) &"Listbox1"& chr(34) &" onChange="& chr(34) &"RunList"& chr(34) &">")
+          Source.WriteLine ("<option value="& chr(34) &"1"& chr(34) &">Listbox Option 1&nbsp&nbsp&nbsp&nbsp&nbsp</option>")
+          Source.WriteLine ("<option value="& chr(34) &"2"& chr(34) &">Listbox Option 2</option>")
+          Source.WriteLine ("<option value="& chr(34) &"3"& chr(34) &">Listbox Option 3</option>")
+          Source.WriteLine ("<option value="& chr(34) &"4"& chr(34) &">Listbox Option 4</option>")
+          Source.WriteLine ("</select>")
+          Source.Close
+          ShellRun = objShell.Run ("%comspec% /c Start Notepad Source.txt", 0, 1)
+      End Sub 'Source7
+  
+      Sub Source8
+       Set Source = fso.CreateTextFile("Source.txt", True)
+           Source.WriteLine ("Source For Multi-Select ListBox Menu")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ VBScript Source ]==--==--")
+          Source.WriteLine ("Sub RunMultiList")
+          Source.WriteLine ("For i = 0 to (MultiListBox.Options.Length - 1)")
+          Source.WriteLine ("If (MultiListBox.Options(i).Selected) Then")
+          Source.WriteLine ("strChoices = strChoices  & "& chr(34) &"Option "& chr(34) &" & MultiListBox.Options(i).Value & vbcrlf")
+          Source.WriteLine ("End If")
+          Source.WriteLine ("Next")
+          Source.WriteLine ("Msgbox "& chr(34) &"You Selected:"& chr(34) &" & vbcrlf & strChoices, 64,"& chr(34) &"Multi-Select ListBox Menu"& chr(34) &"")
+          Source.WriteLine ("End Sub 'RunMultiList")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ HTML Source ]==--==--")
+          Source.WriteLine ("<FONT SIZE=2><B><I>Use Ctrl to Select Multiple Options:</I></B></FONT><BR>")
+          Source.WriteLine ("<select size="& chr(34) &"4"& chr(34) &" name="& chr(34) &"MultiListBox"& chr(34) &" multiple>")
+          Source.WriteLine ("<option value="& chr(34) &"1"& chr(34) &">MultiListBox Option 1</option>")
+          Source.WriteLine ("<option value="& chr(34) &"2"& chr(34) &">MultiListBox Option 2</option>")
+          Source.WriteLine ("<option value="& chr(34) &"3"& chr(34) &">MultiListBox Option 3</option>")
+          Source.WriteLine ("<option value="& chr(34) &"4"& chr(34) &">MultiListBox Option 4</option>")
+          Source.WriteLine ("</select>")
+          Source.Close
+          ShellRun = objShell.Run ("%comspec% /c Start Notepad Source.txt", 0, 1)
+      End Sub 'Source8
+  
+      Sub Source9
+       Set Source = fso.CreateTextFile("Source.txt", True)
+           Source.WriteLine ("Source For Drop Down Menu From File")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ VBScript Source ]==--==--")
+          Source.WriteLine ("Sub Window_Onload")
+          Source.WriteLine ("    ForReading = 1")
+          Source.WriteLine ("    strNewFile = "& chr(34) &"Phrases.txt"& chr(34) &"")
+          Source.WriteLine ("    Set objFSO = CreateObject("& chr(34) &"Scripting.FileSystemObject"& chr(34) &")")
+          Source.WriteLine ("    Set objFile = objFSO.OpenTextFile _")
+          Source.WriteLine ("        (strNewFile, ForReading)")
+          Source.WriteLine ("    Do Until objFile.AtEndOfStream")
+          Source.WriteLine ("        strLine = objFile.ReadLine")
+          Source.WriteLine ("        Set objOption = Document.createElement("& chr(34) &"OPTION"& chr(34) &")")
+          Source.WriteLine ("        objOption.Text = strLine")
+          Source.WriteLine ("        objOption.Value = strLine")
+          Source.WriteLine ("        AvailablePhrases.Add(objOption)")
+          Source.WriteLine ("    Loop")
+          Source.WriteLine ("    objFile.Close")
+          Source.WriteLine ("End Sub")
+          Source.WriteLine ("")
+          Source.WriteLine ("Sub onthefly")
+          Source.WriteLine ("    Selection = AvailablePhrases.Value")
+          Source.WriteLine ("MsgBox "& chr(34) &"You Selected:"& chr(34) &" & VBCRLF & Selection, 64,"& chr(34) &"On-The-Fly List Box"& chr(34) &"")
+          Source.WriteLine ("End Sub 'onthefly")
+          Source.WriteLine ("Sub OpenPhrases")
+          Source.WriteLine ("ShellRun = objShell.Run ("& chr(34) &"%comspec% /c Start Notepad Phrases.txt"& chr(34) &", 0, 1)")
+          Source.WriteLine ("End Sub '")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ HTML Source ]==--==--")
+          Source.WriteLine ("<FONT SIZE=2><B><I>Drop Down Menu From File</I></B></FONT><BR>")
+          Source.WriteLine ("<select size="& chr(34) &"1"& chr(34) &" name="& chr(34) &"AvailablePhrases"& chr(34) &">")
+          Source.WriteLine ("<option>&nbsp&nbsp</option>")
+          Source.WriteLine ("</select>")
+          Source.WriteLine ("<input type="& chr(34) &"button"& chr(34) &" onClick="& chr(34) &"onthefly"& chr(34) &" value="& chr(34) &"Submit"& chr(34) &">")
+          Source.WriteLine ("<input type="& chr(34) &"button"& chr(34) &" value="& chr(34) &"Open"& chr(34) &" onclick="& chr(34) &"OpenPhrases"& chr(34) &">")
+          Source.Close
+          ShellRun = objShell.Run ("%comspec% /c Start Notepad Source.txt", 0, 1)
+      End Sub 'Source9
+  
+      Sub Source10
+       Set Source = fso.CreateTextFile("Source.txt", True)
+           Source.WriteLine ("Source For Drop Down Menu From File")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ VBScript Source ]==--==--")
+          Source.WriteLine ("    Sub Readfile")
+          Source.WriteLine ("     sFile = datafile.Value")
+          Source.WriteLine ("     If sFile = "& chr(34) &""& chr(34) &" Then")
+          Source.WriteLine ("        MsgBox "& chr(34) &"Select a File First.      "& chr(34) &", 64,"& chr(34) &"Browse for File"& chr(34) &"")
+          Source.WriteLine ("     Else")
+          Source.WriteLine ("        ShellRun = objShell.Run ("& chr(34) &"%comspec% /c Start Notepad "& chr(34) &"& sFile, 0, 1)")
+          Source.WriteLine ("    End If")
+          Source.WriteLine ("    End Sub 'Readfile")
+          Source.WriteLine ("")
+          Source.WriteLine ("--==--==[ HTML Source ]==--==--")
+          Source.WriteLine ("<FONT SIZE=2><B><I>Please specify a text file To Open:</I></B></FONT><BR>")
+          Source.WriteLine ("<input type="& chr(34) &"file"& chr(34) &" style="& chr(34) &"background-color:#ffb7d6"& chr(34) &" name="& chr(34) &"datafile"& chr(34) &" size="& chr(34) &"25"& chr(34) &">")
+          Source.WriteLine ("<input type="& chr(34) &"submit"& chr(34) &" onClick="& chr(34) &"Readfile"& chr(34) &" value="& chr(34) &"Open File"& chr(34) &">")
+          Source.Close
+          ShellRun = objShell.Run ("%comspec% /c Start Notepad Source.txt", 0, 1)
+      End Sub 'Source10
+  '<!--#############################[ Quit ]#############################-->
+    Sub Quit_onclick
+      Window.Close
+    End Sub
+  
+   </SCRIPT>
+  
+  <TABLE width="100%" border=1>
+  <TR>
+  <TD>
+  
+  <!--==--==--==--==--==--==--==--==-- Text Types --==--==--==--==--==--==--==-->
+  <TABLE Width="100%" border="1">
+      <TR>
+         <TD  STYLE="filter:progid:DXImageTransform.Microsoft.Gradient (GradientType=1, StartColorStr='#fffa28', EndColorStr='#ffa420')">
+          
+  <b>boldface text</b>&nbsp <i>italic text</i>&nbsp <u>underlined text</u><br>regular script &nbsp<sub>sub script</sub>&nbsp <sup>super script</sup>&nbsp&nbsp<TT>Typewriter Text</TT><br>This &nbsp;&nbsp; text &nbsp;&nbsp; is &nbsp;&nbsp; separated &nbsp;&nbsp; by &nbsp;&nbsp; blank &nbsp;&nbsp; spaces.
+          
+         </TD>
+      </TR>
+  </TABLE>
+  <BR>
+  <!--==--==--==--==--==--==--==--==-- Text Input --==--==--==--==--==--==--==-->
+  <CENTER>
+  <TABLE Width="100%" border="1">
+      <TR>
+          <TD bgcolor="#28ffbc">
+          <FONT SIZE=2><B><I>Text Input</I></B></FONT><BR>
+          <CENTER>
+          <input type="text" style="background-color:#ffb7d6" size="16" name="txt" value="Enter text here">&nbsp
+          <input type="button" value="Submit" onclick="SubmitText">
+          <input type="button" value="Source" onclick="Source1">
+          </CENTER>
+          </TD>
+      </TR>
+  </TABLE>
+  
+  <!--==--==--==--==--==--==--==--==-- Textarea Input --==--==--==--==--==--==--==-->
+  <HR>
+  <TABLE Width="100%" border="1">
+      <TR>
+          <TD bgcolor="#28ffbc">
+          <FONT SIZE=2><B><I>Textarea Input</I></B></FONT><BR>
+          <CENTER>
+          <form method="POST">
+              <TEXTAREA style="
+                  Height:193;
+                  Width:100%;
+                  font-Size:12;
+                  color:#000000;
+                  background-color:#ffffe7;
+                  font-weight:normal;
+                  font-family:MS Sans Serif" 
+                     TITLE="" 
+                     NAME=Txtarea TABORDER=2 WRAP=PHYSICAL>The contents of this text area will be written to TextArea.txt when you click submit.</TEXTAREA>
+      <TR>
+          <TD bgcolor="#28ffbc">
+          <CENTER>
+          <input type="button" value="Submit" onclick="Submitarea">
+          <input type="reset" value="Reset">
+          <input type="button" value="Open" onclick="OpenTxtArea">
+          <input type="button" value="Source" onclick="Source2">
+          </CENTER>
+          </TD>
+      </TR>
+          </CENTER>
+          </TD>
+      </TR>
+  </TABLE>
+  
+  <!--==--==--==--==--==--==--==--==-- Radio Button --==--==--==--==--==--==--==-->
+  <HR>
+  <TABLE Width="100%" border="0">
+    <TR>
+      <TD>
+      <FONT SIZE=2><B><I>Radio Button</I></B></FONT><BR>
+  <font color="#000000"><i><fieldset><legend>Select One</legend></i></font>
+      <CENTER>
+      <input type="radio" style="background-color:#ff0000" checked name="rbtn" value="0">Option 1
+      <input type="radio" style="background-color:#ffff00" name="rbtn" value="1">Option 2
+      <input type="radio" style="background-color:#00ff00" name="rbtn" value="2">Option 3
+      <BR>
+      <BR>
+      <INPUT STYLE="filter:progid:DXImageTransform.Microsoft.Gradient (GradientType=0, StartColorStr='#a1ff97', EndColorStr='#009f00')" type="Button" Value="Check"  onclick="CheckRadio">
+      <input type="button" value="Source" onclick="Source3">
+      </CENTER>
+      </TD>
+    </TR>
+  </TABLE>
+  
+  <!--==--==--==--==--==--==--==--==-- Checkbox --==--==--==--==--==--==--==-->
+  <HR>
+  <TABLE Width="100%" border="0">
+    <TR>
+      <TD>
+      <Form Name=ChkBoxFrm>
+          <FONT SIZE=2><B><I>Check-Box</I></B></FONT><BR>
+  <font color="#000000"><i><fieldset><legend>Select One or More</legend></i></font>
+      <CENTER>
+      <input style="background-color:#00ff00" name="ChkBx1" Checked value="Box1" type="checkbox">CheckBox 1
+      <input style="background-color:#ffff00" name="ChkBx2" value="Box2" type="checkbox">CheckBox 2
+      <input style="background-color:#ff0000" name="ChkBx3" value="Box3" type="checkbox">CheckBox 3
+      <BR>
+      <BR>
+      <INPUT STYLE="filter:progid:DXImageTransform.Microsoft.Gradient (GradientType=0, StartColorStr='#8ff2ff', EndColorStr='#008785')" type="Button" Value="Check"  onclick="CheckChkBx">
+      <input type="button" value="Source" onclick="Source4">
+      </CENTER>
+      </Form>
+      </TD>
+    </TR>
+  </TABLE>
+  
+  <!--==--==--==--==--==--==--= Beginning of Right Side =--==--==--==--==--==-->
+  <!--==--==--==--==--==--==--==-- DropMenu OnChange --==--==--==--==--==--==-->
+  
+  <TD>
+  <FONT SIZE=2><B><I>Drop Down Menu onChange</I></B></FONT><BR>
+  <select size="1" name="DropDown1" onChange="RunDropChange">
+  <option>Choose One&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+  <option value="1">onChange Option 1</option>
+  <option value="2">onChange Option 2</option>
+  <option value="3">onChange Option 3</option>
+  <option value="4">onChange Option 4</option>
+  </select>
+  <input type="button" value="Source" onclick="Source5">
+  <HR>
+  <!--==--==--==--==--==--==--==-- DropMenu OnClick --==--==--==--==--==--==-->
+  
+  <BR>
+  <FONT SIZE=2><B><I>Drop Down Menu onClick</I></B></FONT><BR>
+  <select size="1" name="DropDown2">
+  <option value="1">OnClick Option 1&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+  <option value="2">OnClick Option 2</option>
+  <option value="3">OnClick Option 3</option>
+  <option value="4">OnClick Option 4</option>
+  </select>
+  <BR>
+  <BR>
+  <CENTER>
+  <input type="button" onClick="RunDropClick" value="Submit">
+  <input type="button" value="Source" onclick="Source6">
+  </CENTER>
+  <HR>
+  <!--==--==--==--==--==--==--==-- Listbox OnChange --==--==--==--==--==--==-->
+  <FONT SIZE=2><B><I>Select an Option:</I></B></FONT><BR>
+  <select size="4" name="Listbox1" onChange="RunList">
+  <option value="1">Listbox Option 1&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+  <option value="2">Listbox Option 2</option>
+  <option value="3">Listbox Option 3</option>
+  <option value="4">Listbox Option 4</option>
+  </select>
+  <input type="button" value="Source" onclick="Source7">
+  <HR>
+  
+  <!--==--==--==--==--==--==--==-- Multi-Select ListBox --==--==--==--==--==--==-->
+  <FONT SIZE=2><B><I>Use Ctrl to Select Multiple Options:</I></B></FONT><BR>
+  <select size="4" name="MultiListBox" multiple>
+  <option value="1">MultiListBox Option 1</option>
+  <option value="2">MultiListBox Option 2</option>
+  <option value="3">MultiListBox Option 3</option>
+  <option value="4">MultiListBox Option 4</option>
+  </select>
+  <BR>
+  <BR>
+  <CENTER>
+  <input type="button" onClick="RunMultiList" value="Submit">
+  <input type="button" value="Source" onclick="Source8">
+  </CENTER>
+  
+  <!--==--==--==--==--==--==--==-- ListBox From File --==--==--==--==--==--==-->
+  <HR>
+  <FONT SIZE=2><B><I>Drop Down Menu From File</I></B></FONT><BR>
+  <select size="1" name="AvailablePhrases">
+  <option>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
+  </select>
+  <BR>
+  <BR>
+  <CENTER>
+  <input type="button" onClick="onthefly" value="Submit">
+  <input type="button" value="Open" onclick="OpenPhrases">
+  <input type="button" value="Source" onclick="Source9">
+  </CENTER>
+  
+  <!--==--==--==--==--==--==--==-- Browse For File --==--==--==--==--==--==-->
+  <HR>
+  <FONT SIZE=2><B><I>Please specify a text file To Open:</I></B></FONT><BR>
+  <input type="file" style="background-color:#ffb7d6" name="datafile" size="25">
+  <p>
+  <CENTER>
+  <input type="submit" onClick="Readfile" value="Open File">
+  <input type="button" value="Source" onclick="Source10">
+  </CENTER>
+  </p>
+  
+  </TD>
+  </TR>
+  </TABLE>
+  
+  <!--==--==--==--==--==--==--==-- Quit --==--==--==--==--==--==-->
+  <CENTER>
+  <HR Size -1>
+  <INPUT STYLE="filter:progid:DXImageTransform.Microsoft.Gradient (GradientType=0, StartColorStr='#c70000', EndColorStr='#ffdfdf')" TYPE=BUTTON NAME="Quit" VALUE=" Quit ">
+  </CENTER>
+  
+  </CENTER>
+  </BODY>
+  </HTML>
+  
