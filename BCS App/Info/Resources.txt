@@ -1,0 +1,5 @@
+Templates
+	http://presentation.creative-tim.com/
+	https://startbootstrap.com/template-overviews/sb-admin-2/
+Resources
+	http://expo.getbootstrap.com/resources/
